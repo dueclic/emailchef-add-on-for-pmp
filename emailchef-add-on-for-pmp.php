@@ -31,25 +31,30 @@ include( "includes/api_call.php" );
  * @param $name (string) - The existing link array
  *
  */
-function pmproecaddon_list_ec_plugin_display( $name ) {
-	echo '<td>';
-	echo '<div class="checkbox-container">';
-
-	$list_data   = get_option( 'pmproecaddon_list_data', '' );
-	$list_config = get_option( 'pmproecaddon_plugin_list_config', '' );
-
-	foreach ( $list_data as $list ) {
-		$name_checkbox = $name . '_' . esc_html( str_replace( " ", "_", $list['name'] ) );
-		echo '<label class="checkbox-item">';
-		if ( isset( $list_config[ $name_checkbox ] ) && $list_config[ $name_checkbox ] == $list['id'] ) {
-			echo '<input style="margin-left: 5px" type="checkbox" name="' . esc_html( $name ) . '_' . esc_html( str_replace( " ", "_", $list['name'] ) ) . '_checkbox" value="' . esc_html( $list['id'] ) . '" checked> ' . esc_html( $list['name'] );
-		} else {
-			echo '<input style="margin-left: 5px" type="checkbox" name="' . esc_html( $name ) . '_' . esc_html( str_replace( " ", "_", $list['name'] ) ) . '_checkbox" value="' . esc_html( $list['id'] ) . '"> ' . esc_html( $list['name'] );
-		}
-		echo '</label>';
-	}
-	echo '</div>';
-	echo '</td>';
+function pmproecaddon_list_ec_plugin_display($name) {
+	$list_data = get_option('pmproecaddon_list_data', '');
+	$list_config = get_option('pmproecaddon_plugin_list_config', '');
+	?>
+	<td>
+		<div class="checkbox-container">
+			<?php foreach ($list_data as $list) :
+				$name_checkbox = $name . '_' . esc_html(str_replace(" ", "_", $list['name']));
+				$is_checked = isset($list_config[$name_checkbox]) && $list_config[$name_checkbox] == $list['id'];
+				?>
+				<label class="checkbox-item">
+					<input
+						style="margin-left: 5px"
+						type="checkbox"
+						name="<?php echo esc_html($name) . '_' . esc_html(str_replace(" ", "_", $list['name'])); ?>_checkbox"
+						value="<?php echo esc_html($list['id']); ?>"
+						<?php echo $is_checked ? 'checked' : ''; ?>
+					>
+					<?php echo esc_html($list['name']); ?>
+				</label>
+			<?php endforeach; ?>
+		</div>
+	</td>
+	<?php
 }
 
 /* MENU */
@@ -85,203 +90,194 @@ add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'pmproecaddon_
  *
  */
 function pmproecaddon_options_page() {
-	if ( isset( $_POST['plugin_save'] ) && ( ! isset( $_POST['pmproecaddon-nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['pmproecaddon-nonce'] ) ), 'pmproecaddon-nonce' ) ) ) {
-		// Guardar la configuración cuando se envía el formulario
-		$user_ec     = sanitize_text_field( $_POST['user_ec'] );
-		$password_ec = sanitize_text_field( $_POST['pass_ec'] );
-		update_option( 'pmproecaddon_plugin_user_ec', $user_ec );
-		update_option( 'pmproecaddon_plugin_pass_ec', $password_ec );
+if (isset($_POST['plugin_save']) && (!isset($_POST['pmproecaddon-nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['pmproecaddon-nonce'])), 'pmproecaddon-nonce'))) {
+	// Guardar la configuración cuando se envía el formulario
+	$user_ec = sanitize_text_field($_POST['user_ec']);
+	$password_ec = sanitize_text_field($_POST['pass_ec']);
+	update_option('pmproecaddon_plugin_user_ec', $user_ec);
+	update_option('pmproecaddon_plugin_pass_ec', $password_ec);
 
-		$list_config           = array();
-		$list_opt_in_audiences = array();
-		$list_nom_member       = array();
-		$list_data             = get_option( 'pmproecaddon_list_data', '' );
+	$list_config = array();
+	$list_opt_in_audiences = array();
+	$list_nom_member = array();
+	$list_data = get_option('pmproecaddon_list_data', '');
 
-		if ( $list_data != null ) {
-			$subscriptions = pmpro_getAllLevels();
-			if ( ! empty( $subscriptions ) ) {
-				foreach ( $subscriptions as $subscription ) {
-					foreach ( $list_data as $list ) {
-						if ( isset( $_POST[ str_replace( " ", "_", $subscription->name ) . '_' . str_replace( " ", "_", $list['name'] ) . '_checkbox' ] ) ) {
-							$list_config[ str_replace( " ", "_", $subscription->name . "_" . str_replace( " ", "_", $list['name'] ) ) ] = sanitize_text_field( $_POST[ str_replace( " ", "_", $subscription->name ) . '_' . str_replace( " ", "_", $list['name'] ) . '_checkbox' ] );
-						}
-					}
-				}
-				update_option( 'pmproecaddon_plugin_list_config', $list_config );
-
-				foreach ( $list_data as $list ) {
-					if ( isset( $_POST[ 'opt_in_audiences_' . str_replace( " ", "_", $list['name'] ) . '_checkbox' ] ) ) {
-						$list_nom_member[ "opt_in_audiences_" . str_replace( " ", "_", $list['name'] ) ] = sanitize_text_field( $_POST[ 'opt_in_audiences_' . str_replace( " ", "_", $list['name'] ) . '_checkbox' ] );
-					}
-				}
-				update_option( 'pmproecaddon_plugin_list_opt_in_audiences', $list_nom_member );
-
-				foreach ( $list_data as $list ) {
-					if ( isset( $_POST[ 'nom_member_audiences_' . str_replace( " ", "_", $list['name'] ) . '_checkbox' ] ) ) {
-						$list_opt_in_audiences[ "nom_member_audiences_" . str_replace( " ", "_", $list['name'] ) ] = sanitize_text_field( $_POST[ 'nom_member_audiences_' . str_replace( " ", "_", $list['name'] ) . '_checkbox' ] );
-					}
-				}
-
-				update_option( 'pmproecaddon_plugin_list_nom_member', $list_opt_in_audiences );
-
-				if ( isset( $_POST['require_unsubscribe_on_level_select'] ) ) {
-					$require_unsubscribe_on_leve_select = sanitize_text_field( $_POST['require_unsubscribe_on_level_select'] );
-					update_option( 'pmproecaddon_require_unsuscribe_on_level', $require_unsubscribe_on_leve_select );
-				}
-
-				if ( isset( $_POST['require_update_profile_select'] ) ) {
-					$require_update_profile_select = sanitize_text_field( $_POST['require_update_profile_select'] );
-					update_option( 'pmproecaddon_require_update_profile', $require_update_profile_select );
-				}
-			} else {
-				echo '<p>No PMPro subscriptions found.</p>';
-			}
-		}
-		//$require_double_opt_in =  sanitize_text_field($_POST["require_double_select"]);
-		//update_option('pmproecaddon_require_double_opt_in', $require_double_opt_in);
-		echo '<div class="updated"><p>Configuration saved successfully.</p></div>';
-	}
-
-	$user_ec     = get_option( 'pmproecaddon_plugin_user_ec', '' );
-	$password_ec = get_option( 'pmproecaddon_plugin_pass_ec', '' );
-
-	echo '<style>';
-	echo '.checkbox-container {width: 300px;max-height: 100px;border: 1px solid #ccc;overflow-y: auto;background-color:white }';
-	echo '.checkbox-item {display: block; margin: 5px 0;}';
-	echo '</style>';
-
-	echo '<div class="wrap">';
-
-	echo '<h1>EmailChef Integration Options and Settings</h1>';
-
-	echo '<h2>Subscribe users to one or more EmailChef audiences when they sign up for your site.</h2>';
-	echo '<label>If you have Paid Membership Pro installed, you can subscribe members to one or more Emailchef audiences baased on their membership level or specify "Opt-in Audiences" that members can select at membership checkout.</label>';
-	echo '<form method="post" action="">';
-	echo '<h2>Login Emailchef</h2>';
-	echo '<table border="0">';
-	echo '<tr>';
-	echo '<td><label>User</label></td>';
-	echo '<td><input style="width:300px;margin-left: 25px" type="text" id="user_ec" name="user_ec" value="' . esc_attr( $user_ec ) . '"></td>';
-	echo '</tr>';
-
-	echo '<tr>';
-	echo '<td><label>Password</label></td>';
-	echo '<td><input style="width:300px;margin-left: 25px" type="password" id="pass_ec" name="pass_ec" value="' . esc_attr( $password_ec ) . '"></td>';
-
-	echo '</tr>';
-	echo '</table>';
-
-	echo '</br>';
-
-	if ( $user_ec != "" && $password_ec != "" ) {
-		pmproecaddon_load_list_ec();
-		$list_data              = get_option( 'pmproecaddon_list_data', '' );
-		$list_opt_in_audiences  = get_option( 'pmproecaddon_plugin_list_opt_in_audiences', '' );
-		$list_nom_member        = get_option( 'pmproecaddon_plugin_list_nom_member', '' );
-		$unsubscribe_on_level   = get_option( 'pmproecaddon_require_unsuscribe_on_level', '' );
-		$require_update_profile = get_option( 'pmproecaddon_require_update_profile', '' );
-
-		echo '<h2>General configuration</h2>';
-		echo '<table border="0">';
-		echo '<tr>';
-		echo '<td><label>Nom-member Audiences</label></td>';
-		echo '<td>';
-		echo '<div class="checkbox-container">';
-		foreach ( $list_data as $list ) {
-			$name_checkbox = "nom_member_audiences_" . esc_html( str_replace( " ", "_", $list['name'] ) );
-			echo '<label class="checkbox-item">';
-			if ( isset( $list_nom_member[ $name_checkbox ] ) && $list_nom_member[ $name_checkbox ] == $list['id'] ) {
-				echo '<input style="margin-left: 5px" type="checkbox" name="nom_member_audiences_' . esc_html( str_replace( " ", "_", $list['name'] ) ) . '_checkbox" value="' . esc_html( $list['id'] ) . ' " checked> ' . esc_html( $list['name'] );
-			} else {
-				echo '<input style="margin-left: 5px" type="checkbox" name="nom_member_audiences_' . esc_html( str_replace( " ", "_", $list['name'] ) ) . '_checkbox" value="' . esc_html( $list['id'] ) . '"> ' . esc_html( $list['name'] );
-			}
-			echo '</label>';
-		}
-		echo '</div>';
-		echo '</td>';
-		echo '</tr>';
-
-		echo '<tr>';
-		echo '<td><label>Opt-in Audiences</label></td>';
-		echo '<td>';
-		echo '<div class="checkbox-container">';
-		foreach ( $list_data as $list ) {
-			$name_checkbox = "opt_in_audiences_" . esc_html( str_replace( " ", "_", $list['name'] ) );
-			echo '<label class="checkbox-item">';
-			if ( isset( $list_opt_in_audiences[ $name_checkbox ] ) && $list_opt_in_audiences[ $name_checkbox ] == $list['id'] ) {
-				echo '<input style="margin-left: 5px"  type="checkbox" name="opt_in_audiences_' . esc_html( str_replace( " ", "_", $list['name'] ) ) . '_checkbox" value="' . esc_html( $list['id'] ) . ' " checked> ' . esc_html( $list['name'] );
-			} else {
-				echo '<input style="margin-left: 5px" type="checkbox" name="opt_in_audiences_' . esc_html( str_replace( " ", "_", $list['name'] ) ) . '_checkbox" value="' . esc_html( $list['id'] ) . '"> ' . esc_html( $list['name'] );
-			}
-			echo '</label>';
-		}
-		echo '</div>';
-		echo '</td>';
-		echo '</tr>';
-
-		echo '<tr>';
-		echo '<td><label>Unsubscribe on Level Change?</label></td>';
-		echo '<td>';
-		echo '<select style="width:200px" name="require_unsubscribe_on_level_select">';
-		echo '<option value="yes_only_old_levels" ' . ( $unsubscribe_on_level == "yes_only_old_levels" ? 'selected' : '' ) . ' >Yes (Only old level audiences.)</option>';
-		echo '<option value="yes_old_level" ' . ( $unsubscribe_on_level == "yes_old_level" ? 'selected' : '' ) . ' >Yes (Old level and opt-in audiences.)</option>';
-		echo '<option value="no" ' . ( ! isset( $unsubscribe_on_level ) || $unsubscribe_on_level == "no" ? 'selected' : '' ) . ' >No</option>';
-		echo '</select>';
-		echo '</td>';
-		echo '</tr>';
-		echo '<tr>';
-		echo '<td></td>';
-		echo '<td>';
-		echo '<label>Recommended: Yes. However, if you manage multiple audiences in EmailChef unsubscribed from other audiences when they register on your site.</label>';
-		echo '</td>';
-		echo '</tr>';
-
-		echo '<tr>';
-		echo '<td><label>Update on Profile Save?</label></td>';
-		echo '<td>';
-		echo '<select style="width:200px" name="require_update_profile_select">';
-		echo '<option value="yes" ' . ( $require_update_profile == "yes" ? 'selected' : '' ) . '>Yes</option>';
-		echo '<option value="no" ' . ( ! isset( $require_update_profile ) || $require_update_profile == "no" ? 'selected' : '' ) . ' >No</option>';
-		echo '</select>';
-		echo '</td>';
-		echo '</tr>';
-		echo '<tr>';
-		echo '<td></td>';
-		echo '<td>';
-		echo "<label>Choosing 'No' will still update EmailChef when user's level is change, email is.</label>";
-		echo '</td>';
-		echo '</tr>';
-
-
-		echo '</table>';
-
+	if ($list_data != null) {
 		$subscriptions = pmpro_getAllLevels();
-
-		if ( ! empty( $subscriptions ) ) {
-			echo '<h2>Membership Levels and Audiences</h2>';
-			echo '<p>PMPro is installed.</p>';
-			echo '<p>For each level below, choose the audience(s) that a new user should be subscribed to when they register.</p>';
-			echo '<table border="0">';
-
-			foreach ( $subscriptions as $subscription ) {
-				echo '<tr>';
-				echo '<td><label>' . esc_html( $subscription->name ) . '</label></td>';
-				pmproecaddon_list_ec_plugin_display( str_replace( " ", "_", $subscription->name ) );
-				echo '</tr>';
+		if (!empty($subscriptions)) {
+			foreach ($subscriptions as $subscription) {
+				foreach ($list_data as $list) {
+					$checkbox_name = str_replace(" ", "_", $subscription->name) . '_' . str_replace(" ", "_", $list['name']) . '_checkbox';
+					if (isset($_POST[$checkbox_name])) {
+						$list_config[str_replace(" ", "_", $subscription->name . "_" . str_replace(" ", "_", $list['name']))] = sanitize_text_field($_POST[$checkbox_name]);
+					}
+				}
 			}
-			echo '</table>';
+			update_option('pmproecaddon_plugin_list_config', $list_config);
+
+			foreach ($list_data as $list) {
+				$checkbox_name = 'opt_in_audiences_' . str_replace(" ", "_", $list['name']) . '_checkbox';
+				if (isset($_POST[$checkbox_name])) {
+					$list_nom_member["opt_in_audiences_" . str_replace(" ", "_", $list['name'])] = sanitize_text_field($_POST[$checkbox_name]);
+				}
+			}
+			update_option('pmproecaddon_plugin_list_opt_in_audiences', $list_nom_member);
+
+			foreach ($list_data as $list) {
+				$checkbox_name = 'nom_member_audiences_' . str_replace(" ", "_", $list['name']) . '_checkbox';
+				if (isset($_POST[$checkbox_name])) {
+					$list_opt_in_audiences["nom_member_audiences_" . str_replace(" ", "_", $list['name'])] = sanitize_text_field($_POST[$checkbox_name]);
+				}
+			}
+			update_option('pmproecaddon_plugin_list_nom_member', $list_opt_in_audiences);
+
+			if (isset($_POST['require_unsubscribe_on_level_select'])) {
+				$require_unsubscribe_on_leve_select = sanitize_text_field($_POST['require_unsubscribe_on_level_select']);
+				update_option('pmproecaddon_require_unsuscribe_on_level', $require_unsubscribe_on_leve_select);
+			}
+
+			if (isset($_POST['require_update_profile_select'])) {
+				$require_update_profile_select = sanitize_text_field($_POST['require_update_profile_select']);
+				update_option('pmproecaddon_require_update_profile', $require_update_profile_select);
+			}
 		} else {
-			echo '<p>No PMPro subscriptions found.</p>';
+			echo '<p>' . __('No PMPro subscriptions found.', 'emailchef-add-on-for-pmp') . '</p>';
 		}
 	}
-	echo '</br>';
-	wp_nonce_field( 'pmproecaddon-nonce', 'nonce' );
-	echo '<input type="submit" name="plugin_save" class="button button-primary" value="Save Settings">';
-	echo '<input style="margin-left: 10px" type="submit" name="plugin_refresh" class="button button-primary" value="Refresh">';
-	echo '</div>';
-	echo '</form>';
+	echo '<div class="updated"><p>' . __('Configuration saved successfully.', 'emailchef-add-on-for-pmp') . '</p></div>';
 }
 
+$user_ec = get_option('pmproecaddon_plugin_user_ec', '');
+$password_ec = get_option('pmproecaddon_plugin_pass_ec', '');
+
+?>
+<style>
+    .checkbox-container {width: 300px; max-height: 100px; border: 1px solid #ccc; overflow-y: auto; background-color: white;}
+    .checkbox-item {display: block; margin: 5px 0;}
+</style>
+<div class="wrap">
+	<h1><?php _e('EmailChef Integration Options and Settings', 'emailchef-add-on-for-pmp'); ?></h1>
+	<h2><?php _e('Subscribe users to one or more EmailChef audiences when they sign up for your site.', 'emailchef-add-on-for-pmp'); ?></h2>
+	<label><?php _e('If you have Paid Membership Pro installed, you can subscribe members to one or more Emailchef audiences based on their membership level or specify "Opt-in Audiences" that members can select at membership checkout.', 'emailchef-add-on-for-pmp'); ?></label>
+	<form method="post" action="">
+		<h2><?php _e('Login Emailchef', 'emailchef-add-on-for-pmp'); ?></h2>
+		<table border="0">
+			<tr>
+				<td><label><?php _e('User', 'emailchef-add-on-for-pmp'); ?></label></td>
+				<td><input style="width:300px; margin-left: 25px" type="text" id="user_ec" name="user_ec" value="<?php echo esc_attr($user_ec); ?>"></td>
+			</tr>
+			<tr>
+				<td><label><?php _e('Password', 'emailchef-add-on-for-pmp'); ?></label></td>
+				<td><input style="width:300px; margin-left: 25px" type="password" id="pass_ec" name="pass_ec" value="<?php echo esc_attr($password_ec); ?>"></td>
+			</tr>
+		</table>
+		<br>
+		<?php
+		if ($user_ec != "" && $password_ec != "") {
+		pmproecaddon_load_list_ec();
+		$list_data = get_option('pmproecaddon_list_data', '');
+		$list_opt_in_audiences = get_option('pmproecaddon_plugin_list_opt_in_audiences', '');
+		$list_nom_member = get_option('pmproecaddon_plugin_list_nom_member', '');
+		$unsubscribe_on_level = get_option('pmproecaddon_require_unsuscribe_on_level', '');
+		$require_update_profile = get_option('pmproecaddon_require_update_profile', '');
+
+		?>
+		<h2><?php _e('General configuration', 'emailchef-add-on-for-pmp'); ?></h2>
+		<table border="0">
+			<tr>
+				<td><label><?php _e('Nom-member Audiences', 'emailchef-add-on-for-pmp'); ?></label></td>
+				<td>
+					<div class="checkbox-container">
+						<?php foreach ($list_data as $list) :
+							$name_checkbox = "nom_member_audiences_" . esc_html(str_replace(" ", "_", $list['name']));
+							$is_checked = isset($list_nom_member[$name_checkbox]) && $list_nom_member[$name_checkbox] == $list['id'];
+							?>
+							<label class="checkbox-item">
+								<input style="margin-left: 5px" type="checkbox" name="<?php echo esc_html('nom_member_audiences_' . str_replace(" ", "_", $list['name'])); ?>_checkbox" value="<?php echo esc_html($list['id']); ?>" <?php echo $is_checked ? 'checked' : ''; ?>>
+								<?php echo esc_html($list['name']); ?>
+							</label>
+						<?php endforeach; ?>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td><label><?php _e('Opt-in Audiences', 'emailchef-add-on-for-pmp'); ?></label></td>
+				<td>
+					<div class="checkbox-container">
+						<?php foreach ($list_data as $list) :
+							$name_checkbox = "opt_in_audiences_" . esc_html(str_replace(" ", "_", $list['name']));
+							$is_checked = isset($list_opt_in_audiences[$name_checkbox]) && $list_opt_in_audiences[$name_checkbox] == $list['id'];
+							?>
+							<label class="checkbox-item">
+								<input style="margin-left: 5px" type="checkbox" name="<?php echo esc_html('opt_in_audiences_' . str_replace(" ", "_", $list['name'])); ?>_checkbox" value="<?php echo esc_html($list['id']); ?>" <?php echo $is_checked ? 'checked' : ''; ?>>
+								<?php echo esc_html($list['name']); ?>
+							</label>
+						<?php endforeach; ?>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td><label><?php _e('Unsubscribe on Level Change?', 'emailchef-add-on-for-pmp'); ?></label></td>
+				<td>
+					<select style="width:200px" name="require_unsubscribe_on_level_select">
+						<option value="yes_only_old_levels" <?php selected($unsubscribe_on_level, "yes_only_old_levels"); ?>><?php _e('Yes (Only old level audiences.)', 'emailchef-add-on-for-pmp'); ?></option>
+						<option value="yes_old_level" <?php selected($unsubscribe_on_level, "yes_old_level"); ?>><?php _e('Yes (Old level and opt-in audiences.)', 'emailchef-add-on-for-pmp'); ?></option>
+						<option value="no" <?php selected($unsubscribe_on_level, "no", true); ?>><?php _e('No', 'emailchef-add-on-for-pmp'); ?></option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>
+					<label><?php _e('Recommended: Yes. However, if you manage multiple audiences in EmailChef, unsubscribed from other audiences when they register on your site.', 'emailchef-add-on-for-pmp'); ?></label>
+				</td>
+			</tr>
+			<tr>
+				<td><label><?php _e('Update on Profile Save?', 'emailchef-add-on-for-pmp'); ?></label></td>
+				<td>
+					<select style="width:200px" name="require_update_profile_select">
+						<option value="yes" <?php selected($require_update_profile, "yes"); ?>><?php _e('Yes', 'emailchef-add-on-for-pmp'); ?></option>
+						<option value="no" <?php selected($require_update_profile, "no", true); ?>><?php _e('No', 'emailchef-add-on-for-pmp'); ?></option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>
+					<label><?php _e('Choosing \'No\' will still update EmailChef when user\'s level is changed, email is.', 'emailchef-add-on-for-pmp'); ?></label>
+				</td>
+			</tr>
+		</table>
+
+			<?php
+			$subscriptions = pmpro_getAllLevels();
+			if (!empty($subscriptions)) {
+				?>
+				<h2><?php _e('Membership Levels and Audiences', 'emailchef-add-on-for-pmp'); ?></h2>
+				<p><?php _e('PMPro is installed.', 'emailchef-add-on-for-pmp'); ?></p>
+				<p><?php _e('For each level below, choose the audience(s) that a new user should be subscribed to when they register.', 'emailchef-add-on-for-pmp'); ?></p>
+				<table border="0">
+					<?php foreach ($subscriptions as $subscription) : ?>
+						<tr>
+							<td><label><?php echo esc_html($subscription->name); ?></label></td>
+							<?php pmproecaddon_list_ec_plugin_display(str_replace(" ", "_", $subscription->name)); ?>
+						</tr>
+					<?php endforeach; ?>
+				</table>
+				<?php
+			} else {
+				echo '<p>' . __('No PMPro subscriptions found.', 'emailchef-add-on-for-pmp') . '</p>';
+			}
+		}
+		?>
+		<br>
+		<?php wp_nonce_field('pmproecaddon-nonce', 'pmproecaddon-nonce'); ?>
+		<input type="submit" name="plugin_save" class="button button-primary" value="<?php esc_attr_e('Save Settings', 'emailchef-add-on-for-pmp'); ?>">
+		<input style="margin-left: 10px" type="submit" name="plugin_refresh" class="button button-primary" value="<?php esc_attr_e('Refresh', 'emailchef-add-on-for-pmp'); ?>">
+	</form>
+</div>
+	<?php
+}
 
 /** ACTION */
 /**
@@ -331,25 +327,28 @@ add_action( 'pmpro_after_checkout', 'pmproecaddon_capture_subscription_pmpro' );
  */
 function pmproecaddon_additional_lists_on_checkout() {
 	try {
-		$list_opt_in_audiences = get_option( 'pmproecaddon_plugin_list_opt_in_audiences', '' );
+		$list_opt_in_audiences = get_option('pmproecaddon_plugin_list_opt_in_audiences', '');
 
-		if ( count( $list_opt_in_audiences ) > 0 ) {
-			$list_data = get_option( 'pmproecaddon_list_data', '' );
-			echo '<h3>Join our mailing list.</h3>';
-
-			echo '<div class="checkbox-container">';
-			foreach ( $list_data as $list ) {
-				$name_checkbox = "opt_in_audiences_" . esc_html( str_replace( " ", "_", $list['name'] ) );
-				echo '<label class="checkbox-item">';
-				if ( isset( $list_opt_in_audiences[ $name_checkbox ] ) && $list_opt_in_audiences[ $name_checkbox ] == $list['id'] ) {
-					echo '<input type="checkbox" name="opt_in_audiences_' . esc_html( str_replace( " ", "_", $list['name'] ) ) . '_checkbox" value="' . esc_html( $list['id'] ) . ' "> ' . esc_html( $list['name'] );
-				}
-				echo '</label>';
-			}
-			echo '</div>';
+		if (count($list_opt_in_audiences) > 0) {
+			$list_data = get_option('pmproecaddon_list_data', '');
+			?>
+			<h3><?php _e('Join our mailing list.', 'emailchef-add-on-for-pmp'); ?></h3>
+			<div class="checkbox-container">
+				<?php foreach ($list_data as $list) :
+					$name_checkbox = "opt_in_audiences_" . esc_html(str_replace(" ", "_", $list['name']));
+					?>
+					<label class="checkbox-item">
+						<?php if (isset($list_opt_in_audiences[$name_checkbox]) && $list_opt_in_audiences[$name_checkbox] == $list['id']) : ?>
+							<input type="checkbox" name="opt_in_audiences_<?php echo esc_html(str_replace(" ", "_", $list['name'])); ?>_checkbox" value="<?php echo esc_html($list['id']); ?>">
+							<?php echo esc_html($list['name']); ?>
+						<?php endif; ?>
+					</label>
+				<?php endforeach; ?>
+			</div>
+			<?php
 		}
-	} catch ( Exception $e ) {
-		pmproecaddon_enqueue_script( $e->getMessage() );
+	} catch (Exception $e) {
+		pmproecaddon_enqueue_script($e->getMessage());
 	}
 }
 
@@ -394,30 +393,32 @@ add_action( 'pmpro_after_checkout', 'pmproecaddon_pmpro_after_checkout', 15 );
 /*
 	Add opt-in Lists to the user profile/edit user page.
 */
-function pmproecaddon_add_custom_user_profile_fields( $user ) {
+function pmproecaddon_add_custom_user_profile_fields($user) {
 	try {
-		$list_opt_in_audiences = get_option( 'pmproecaddon_plugin_list_opt_in_audiences', '' );
+		$list_opt_in_audiences = get_option('pmproecaddon_plugin_list_opt_in_audiences', '');
 
-		if ( count( $list_opt_in_audiences ) > 0 ) {
-			$list_data = get_option( 'pmproecaddon_list_data', '' );
-			echo '<b><h4>Join our mailing list.</h4></b>';
-
-			echo '<div class="checkbox-container">';
-			foreach ( $list_data as $list ) {
-				$name_checkbox = "opt_in_audiences_" . esc_html( str_replace( " ", "_", $list['name'] ) );
-				echo '<label class="checkbox-item">';
-				if ( isset( $list_opt_in_audiences[ $name_checkbox ] ) && $list_opt_in_audiences[ $name_checkbox ] == $list['id'] ) {
-					echo '<input type="checkbox" name="opt_in_audiences_' . esc_html( str_replace( " ", "_", $list['name'] ) ) . '_checkbox" value="' . esc_html( $list['id'] ) . ' "> ' . esc_html( $list['name'] );
-				}
-				echo '</label>';
-			}
-			echo '</div>';
+		if (count($list_opt_in_audiences) > 0) {
+			$list_data = get_option('pmproecaddon_list_data', '');
+			?>
+			<h4><?php _e('Join our mailing list.', 'emailchef-add-on-for-pmp'); ?></h4>
+			<div class="checkbox-container">
+				<?php foreach ($list_data as $list) :
+					$name_checkbox = "opt_in_audiences_" . esc_html(str_replace(" ", "_", $list['name']));
+					?>
+					<label class="checkbox-item">
+						<?php if (isset($list_opt_in_audiences[$name_checkbox]) && $list_opt_in_audiences[$name_checkbox] == $list['id']) : ?>
+							<input type="checkbox" name="opt_in_audiences_<?php echo esc_html(str_replace(" ", "_", $list['name'])); ?>_checkbox" value="<?php echo esc_html($list['id']); ?>">
+							<?php echo esc_html($list['name']); ?>
+						<?php endif; ?>
+					</label>
+				<?php endforeach; ?>
+			</div>
+			<?php
 		}
-	} catch ( Exception $e ) {
-		pmproecaddon_enqueue_script( $e->getMessage() );
+	} catch (Exception $e) {
+		pmproecaddon_enqueue_script($e->getMessage());
 	}
 }
-
 add_action( 'show_user_profile', 'pmproecaddon_add_custom_user_profile_fields', 12 );
 add_action( 'edit_user_profile', 'pmproecaddon_add_custom_user_profile_fields', 12 );
 add_action( 'pmpro_show_user_profile', 'pmproecaddon_add_custom_user_profile_fields', 12 );
@@ -569,11 +570,12 @@ function pmproecaddon_enqueue_script( $text ) {
 add_action( 'wp_enqueue_scripts', 'pmproecaddon_enqueue_script' );
 
 function pmproecaddon_check_pmpro() {
-	if ( ! function_exists( 'pmpro_hasMembershipLevel' ) ) {
-		deactivate_plugins( plugin_basename( __FILE__ ) );
-		wp_die( 'This plugin requires Paid Memberships Pro. <a href="' . admin_url( 'plugins.php' ) . '">Please back to Plugins page</a>.' );
+	if (!function_exists('pmpro_hasMembershipLevel')) {
+		deactivate_plugins(plugin_basename(__FILE__));
+		wp_die(__('This plugin requires Paid Memberships Pro. <a href="%s">Please go back to the Plugins page</a>.', 'emailchef-add-on-for-pmp'), esc_url(admin_url('plugins.php')));
 	}
 }
+
 
 // Usa l'hook di attivazione per il tuo plugin
 register_activation_hook( __FILE__, 'pmproecaddon_check_pmpro' );
