@@ -134,7 +134,7 @@ function pmproecaddon_update_contact($id_list,$user_email,$user_login,$firstname
     $variables = include("variables.php");
 
     $contact_id = pmproecaddon_get_contact($user_email,$id_list);
-    if(isset($contact_id)){
+    if(!is_null($contact_id)){
         $data = array(
             "instance_in" => array(
                 "list_id" => $id_list,
@@ -203,7 +203,7 @@ function pmproecaddon_get_contact($user_email,$list_id){
     $response = wp_remote_get($url_contact, $options);
 
     if (is_wp_error($response)) {
-        return;
+        return null;
     }
 
     $id = 0;
