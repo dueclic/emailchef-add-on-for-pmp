@@ -1,0 +1,27 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: emailchef-add-on-for-pmp\n"
+"POT-Creation-Date: 2024-06-26 10:31+0200\n"
+"PO-Revision-Date: 2024-06-26 10:31+0200\n"
+"Last-Translator: \n"
+"Language-Team: Italian\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Poedit 3.4.4\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#~ msgid "dueclic"
+#~ msgstr "dueclic"
+
+#~ msgid "Emailchef Add On for Paid Memberships Pro"
+#~ msgstr "Emailchef Add On for Paid Memberships Pro"
+
+#~ msgid "https://www.dueclic.com"
+#~ msgstr "https://www.dueclic.com"
+
+#~ msgid "Settings"
+#~ msgstr "Impostazioni"

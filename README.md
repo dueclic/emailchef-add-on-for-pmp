@@ -1,8 +1,9 @@
 === Emailchef Add On for Paid Memberships Pro ===
-Contributors: paidmembershipspro, Edisplay, dueclic
+Contributors: Edisplay, dueclic
+Donate link: https://www.dueclic.com
 Tags: paid memberships pro, pmpro, emaiclhef, email marketing
 Requires at least: 4.7
-Tested up to: 6.4
+Tested up to: 6.5
 Stable tag: 1.0.0
 Requires PHP: 7.0
 License: GPLv2
@@ -33,7 +34,7 @@ The settings page allows the site admin to specify which audience lists to assig
 This plugin works with and without Paid Memberships Pro installed.
 
 = Download, Install and Activate! =
-1. Upload the `pmpro-emailchef` directory to the `/wp-content/plugins/` directory of your site.
+1. Upload the `emailchef-add-on-for-pmp` directory to the `/wp-content/plugins/` directory of your site.
 1. Activate the plugin through the 'Plugins' menu in WordPress.
 1. Navigate to Settings > PMPro EmailChef to proceed with setup.
 
