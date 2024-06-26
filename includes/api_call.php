@@ -64,7 +64,7 @@ function pmproecaddon_suscribe_contact_ec($id_list,$user_email,$user_login){
         )
     );
 
-    $data_json = json_encode($data);
+    $data_json = wp_json_encode($data);
 
     $user_ec = get_option('pmproecaddon_plugin_user_ec', '');
     $pass_ec = get_option('pmproecaddon_plugin_pass_ec', '');
@@ -146,7 +146,7 @@ function pmproecaddon_update_contact($id_list,$user_email,$user_login,$firstname
             )
         );
 
-        $data_json = json_encode($data);
+        $data_json = wp_json_encode($data);
 
         $user_ec = get_option('pmproecaddon_plugin_user_ec', '');
         $pass_ec = get_option('pmproecaddon_plugin_pass_ec', '');
