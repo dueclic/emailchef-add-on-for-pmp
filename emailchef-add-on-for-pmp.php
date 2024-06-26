@@ -559,3 +559,13 @@ function pmproecaddon_enqueue_script($text) {
 }
 
 add_action( 'wp_enqueue_scripts', 'pmproecaddon_enqueue_script' );
+
+function pmproecaddon_check_pmpro() {
+	if (!function_exists('pmpro_hasMembershipLevel')) {
+		deactivate_plugins(plugin_basename(__FILE__));
+		wp_die('This plugin requires Paid Memberships Pro. <a href="' . admin_url('plugins.php') . '">Please back to Plugins page</a>.');
+	}
+}
+
+// Usa l'hook di attivazione per il tuo plugin
+register_activation_hook(__FILE__, 'pmproecaddon_check_pmpro');
