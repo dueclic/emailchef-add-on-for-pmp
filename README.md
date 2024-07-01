@@ -8,6 +8,7 @@ Stable tag: 1.0
 Requires PHP: 7.0
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Plugin URI: https://emailchef.com/it/add-on-emailchef-per-wordpress-paid-memberships-pro/
 
 Add users and members to EmailChef audiences based on their membership level and allow members to opt-in to specific audiences.
 
