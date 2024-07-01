@@ -27,6 +27,7 @@ include( "includes/api_call.php" );
 
 /**
  * Add checkbox for plugin
+ * Add checkbox for plugin
  *
  * @param $name (string) - The existing link array
  *
@@ -87,19 +88,18 @@ add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'pmproecaddon_
 add_action('admin_post_pmproecaddon_save_data', 'pmproecaddon_save_data');
 
 function pmproecaddon_save_data(){
-    die("CIAO");
-	if ( isset( $_POST['plugin_save'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['pmproecaddon-nonce'] ) ), 'pmproecaddon-nonce' ) )  {
-		// Guardar la configuración cuando se envía el formulario
+	if ( isset( $_POST['plugin_save'] ) &&
+         wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['pmproecaddon-nonce'] ) ), 'pmproecaddon-nonce' )
+    )  {
+
 		$user_ec     = sanitize_email( $_POST['user_ec'] );
 		$password_ec = sanitize_text_field( $_POST['pass_ec'] );
 
 		$logged_in = pmproecaddon_login($user_ec, $password_ec);
 
         if (!$logged_in){
-            wp_die(
-	            '<p>'.__( 'Emailchef credentials are wrong.', 'emailchef-add-on-for-pmp' ).'</p>'
-            );
-
+	        wp_safe_redirect(add_query_arg('pmproecaddon_msg', 'emailchef_credentials_wrong', wp_get_referer()));
+	        exit;
         }
 
 		update_option( 'pmproecaddon_plugin_user_ec', $user_ec );
@@ -149,10 +149,12 @@ function pmproecaddon_save_data(){
 					update_option( 'pmproecaddon_require_update_profile', $require_update_profile_select );
 				}
 			} else {
-				echo '<p>' . __( 'No PMPro subscriptions found.', 'emailchef-add-on-for-pmp' ) . '</p>';
+				wp_safe_redirect(add_query_arg('pmproecaddon_msg', 'no_subscriptions', wp_get_referer()));
+				exit;
 			}
 		}
-		echo '<div class="updated"><p>' . __( 'Configuration saved successfully.', 'emailchef-add-on-for-pmp' ) . '</p></div>';
+		wp_safe_redirect(add_query_arg('pmproecaddon_msg', 'success', wp_get_referer()));
+		exit;
 	}
 }
 
@@ -185,7 +187,20 @@ function pmproecaddon_options_page() {
         <h1><?php _e( 'EmailChef Integration Options and Settings', 'emailchef-add-on-for-pmp' ); ?></h1>
         <h2><?php _e( 'Subscribe users to one or more EmailChef audiences when they sign up for your site.', 'emailchef-add-on-for-pmp' ); ?></h2>
         <label><?php _e( 'If you have Paid Membership Pro installed, you can subscribe members to one or more Emailchef audiences based on their membership level or specify "Opt-in Audiences" that members can select at membership checkout.', 'emailchef-add-on-for-pmp' ); ?></label>
-        <form method="post" action="">
+
+	    <?php
+	    if ( isset( $_GET['pmproecaddon_msg'] ) ) {
+		    if ( $_GET['pmproecaddon_msg'] == 'success' ) {
+			    echo '<div class="updated"><p>' . __( 'Configuration saved successfully.', 'emailchef-add-on-for-pmp' ) . '</p></div>';
+		    } elseif ( $_GET['pmproecaddon_msg'] == 'emailchef_credentials_wrong' ) {
+			    echo '<div class="error"><p>' . __( 'Emailchef credentials are wrong.', 'emailchef-add-on-for-pmp' ) . '</p></div>';
+		    } elseif ( $_GET['pmproecaddon_msg'] == 'no_subscriptions' ) {
+			    echo '<div class="error"><p>' . __( 'No PMPro subscriptions found.', 'emailchef-add-on-for-pmp' ) . '</p></div>';
+		    }
+	    }
+	    ?>
+
+        <form method="post" action="<?php echo admin_url("admin-post.php"); ?>">
             <h2><?php _e( 'Login Emailchef', 'emailchef-add-on-for-pmp' ); ?></h2>
             <table border="0">
                 <tr>
@@ -626,5 +641,3 @@ function pmproecaddon_load_textdomain() {
 }
 
 add_action( 'plugins_loaded', 'pmproecaddon_load_textdomain' );
-
-

@@ -256,5 +256,5 @@ function pmproecaddon_login( $emailchef_user, $emailchef_passww ) {
 		return false;
 	}
 
-	return false;
+	return true;
 }
