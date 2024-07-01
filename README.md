@@ -36,8 +36,8 @@ This plugin works with and without Paid Memberships Pro installed.
 
 = Download, Install and Activate! =
 1. Upload the `emailchef-add-on-for-pmp` directory to the `/wp-content/plugins/` directory of your site.
-1. Activate the plugin through the 'Plugins' menu in WordPress.
-1. Navigate to Settings > PMPro EmailChef to proceed with setup.
+2. Activate the plugin through the 'Plugins' menu in WordPress.
+3. Navigate to Settings > PMPro EmailChef to proceed with setup.
 
 = Configuration and Settings =
 
