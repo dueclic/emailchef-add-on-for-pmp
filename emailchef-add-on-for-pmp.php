@@ -85,90 +85,99 @@ function pmproecaddon_menu( $links ) {
 
 add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'pmproecaddon_menu' );
 
-add_action('admin_post_pmproecaddon_save_data', 'pmproecaddon_save_data');
+add_action( 'admin_post_pmproecaddon_save_data', 'pmproecaddon_save_data' );
 
-function pmproecaddon_save_data(){
+function pmproecaddon_reset_options() {
+	if ( wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['pmproecaddon-reset-nonce'] ) ), 'pmproecaddon-reset-nonce' )
+	     && isset( $_POST['plugin_reset'] )
+	) {
+		update_option( 'pmproecaddon_plugin_user_enabled', 'no' );
+		delete_option( 'pmproecaddon_plugin_user_ec' );
+		delete_option( 'pmproecaddon_plugin_pass_ec' );
+		delete_option( 'pmproecaddon_plugin_list_config' );
+		delete_option( 'pmproecaddon_plugin_list_opt_in_audiences' );
+		delete_option( 'pmproecaddon_plugin_list_nom_member' );
+		delete_option( 'pmproecaddon_require_unsuscribe_on_level' );
+		delete_option( 'pmproecaddon_require_update_profile' );
+		delete_option( 'pmproecaddon_list_data' ); // Assuming you want to reset this as well
+		wp_safe_redirect( add_query_arg( 'pmproecaddon_msg', 'reset', wp_get_referer() ) );
+		exit;
+	}
+}
+add_action( 'admin_post_pmproecaddon_reset_options', 'pmproecaddon_reset_options' );
 
-    if (wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['pmproecaddon-nonce'] ) ), 'pmproecaddon-nonce' )) {
-	    if ( isset( $_POST['plugin_save'] ) ) {
+function pmproecaddon_save_data() {
 
-		    $user_ec     = sanitize_email( $_POST['user_ec'] );
-		    $password_ec = sanitize_text_field( $_POST['pass_ec'] );
+	if ( wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['pmproecaddon-nonce'] ) ), 'pmproecaddon-nonce' )
+	     && isset( $_POST['plugin_save'] )
+	) {
 
-		    $logged_in = pmproecaddon_login( $user_ec, $password_ec );
+		$user_ec     = sanitize_email( $_POST['user_ec'] );
+		$password_ec = sanitize_text_field( $_POST['pass_ec'] );
 
-		    if ( ! $logged_in ) {
-			    wp_safe_redirect( add_query_arg( 'pmproecaddon_msg', 'emailchef_credentials_wrong', wp_get_referer() ) );
-			    exit;
-		    }
+		$logged_in = pmproecaddon_login( $user_ec, $password_ec );
 
-		    update_option( 'pmproecaddon_plugin_user_ec', $user_ec );
-		    update_option( 'pmproecaddon_plugin_pass_ec', $password_ec );
+		if ( ! $logged_in ) {
+			update_option( 'pmproecaddon_plugin_user_enabled', 'no' );
+			wp_safe_redirect( add_query_arg( 'pmproecaddon_msg', 'emailchef_credentials_wrong', wp_get_referer() ) );
+			exit;
+		}
 
-		    $list_config           = array();
-		    $list_opt_in_audiences = array();
-		    $list_nom_member       = array();
-		    $list_data             = get_option( 'pmproecaddon_list_data', '' );
+		update_option( 'pmproecaddon_plugin_user_enabled', 'yes' );
+		update_option( 'pmproecaddon_plugin_user_ec', $user_ec );
+		update_option( 'pmproecaddon_plugin_pass_ec', $password_ec );
 
-		    if ( $list_data != null ) {
-			    $subscriptions = pmpro_getAllLevels();
-			    if ( ! empty( $subscriptions ) ) {
-				    foreach ( $subscriptions as $subscription ) {
-					    foreach ( $list_data as $list ) {
-						    $checkbox_name = str_replace( " ", "_", $subscription->name ) . '_' . str_replace( " ", "_", $list['name'] ) . '_checkbox';
-						    if ( isset( $_POST[ $checkbox_name ] ) ) {
-							    $list_config[ str_replace( " ", "_", $subscription->name . "_" . str_replace( " ", "_", $list['name'] ) ) ] = sanitize_text_field( $_POST[ $checkbox_name ] );
-						    }
-					    }
-				    }
-				    update_option( 'pmproecaddon_plugin_list_config', $list_config );
+		$list_config           = array();
+		$list_opt_in_audiences = array();
+		$list_nom_member       = array();
+		$list_data             = get_option( 'pmproecaddon_list_data', '' );
 
-				    foreach ( $list_data as $list ) {
-					    $checkbox_name = 'opt_in_audiences_' . str_replace( " ", "_", $list['name'] ) . '_checkbox';
-					    if ( isset( $_POST[ $checkbox_name ] ) ) {
-						    $list_nom_member[ "opt_in_audiences_" . str_replace( " ", "_", $list['name'] ) ] = sanitize_text_field( $_POST[ $checkbox_name ] );
-					    }
-				    }
-				    update_option( 'pmproecaddon_plugin_list_opt_in_audiences', $list_nom_member );
+		if ( $list_data != null ) {
+			$subscriptions = pmpro_getAllLevels();
+			if ( ! empty( $subscriptions ) ) {
+				foreach ( $subscriptions as $subscription ) {
+					foreach ( $list_data as $list ) {
+						$checkbox_name = str_replace( " ", "_", $subscription->name ) . '_' . str_replace( " ", "_", $list['name'] ) . '_checkbox';
+						if ( isset( $_POST[ $checkbox_name ] ) ) {
+							$list_config[ str_replace( " ", "_", $subscription->name . "_" . str_replace( " ", "_", $list['name'] ) ) ] = sanitize_text_field( $_POST[ $checkbox_name ] );
+						}
+					}
+				}
+				update_option( 'pmproecaddon_plugin_list_config', $list_config );
 
-				    foreach ( $list_data as $list ) {
-					    $checkbox_name = 'nom_member_audiences_' . str_replace( " ", "_", $list['name'] ) . '_checkbox';
-					    if ( isset( $_POST[ $checkbox_name ] ) ) {
-						    $list_opt_in_audiences[ "nom_member_audiences_" . str_replace( " ", "_", $list['name'] ) ] = sanitize_text_field( $_POST[ $checkbox_name ] );
-					    }
-				    }
-				    update_option( 'pmproecaddon_plugin_list_nom_member', $list_opt_in_audiences );
+				foreach ( $list_data as $list ) {
+					$checkbox_name = 'opt_in_audiences_' . str_replace( " ", "_", $list['name'] ) . '_checkbox';
+					if ( isset( $_POST[ $checkbox_name ] ) ) {
+						$list_nom_member[ "opt_in_audiences_" . str_replace( " ", "_", $list['name'] ) ] = sanitize_text_field( $_POST[ $checkbox_name ] );
+					}
+				}
+				update_option( 'pmproecaddon_plugin_list_opt_in_audiences', $list_nom_member );
 
-				    if ( isset( $_POST['require_unsubscribe_on_level_select'] ) ) {
-					    $require_unsubscribe_on_leve_select = sanitize_text_field( $_POST['require_unsubscribe_on_level_select'] );
-					    update_option( 'pmproecaddon_require_unsuscribe_on_level', $require_unsubscribe_on_leve_select );
-				    }
+				foreach ( $list_data as $list ) {
+					$checkbox_name = 'nom_member_audiences_' . str_replace( " ", "_", $list['name'] ) . '_checkbox';
+					if ( isset( $_POST[ $checkbox_name ] ) ) {
+						$list_opt_in_audiences[ "nom_member_audiences_" . str_replace( " ", "_", $list['name'] ) ] = sanitize_text_field( $_POST[ $checkbox_name ] );
+					}
+				}
+				update_option( 'pmproecaddon_plugin_list_nom_member', $list_opt_in_audiences );
 
-				    if ( isset( $_POST['require_update_profile_select'] ) ) {
-					    $require_update_profile_select = sanitize_text_field( $_POST['require_update_profile_select'] );
-					    update_option( 'pmproecaddon_require_update_profile', $require_update_profile_select );
-				    }
-			    } else {
-				    wp_safe_redirect( add_query_arg( 'pmproecaddon_msg', 'no_subscriptions', wp_get_referer() ) );
-				    exit;
-			    }
-		    }
-		    wp_safe_redirect( add_query_arg( 'pmproecaddon_msg', 'success', wp_get_referer() ) );
-		    exit;
-	    }
-        if (isset($_POST['plugin_refresh'])){
-	        delete_option( 'pmproecaddon_plugin_user_ec' );
-	        delete_option( 'pmproecaddon_plugin_pass_ec' );
-	        delete_option( 'pmproecaddon_plugin_list_config' );
-	        delete_option( 'pmproecaddon_plugin_list_opt_in_audiences' );
-	        delete_option( 'pmproecaddon_plugin_list_nom_member' );
-	        delete_option( 'pmproecaddon_require_unsuscribe_on_level' );
-	        delete_option( 'pmproecaddon_require_update_profile' );
-	        delete_option( 'pmproecaddon_list_data' ); // Assuming you want to reset this as well
-	        wp_safe_redirect( add_query_arg( 'pmproecaddon_msg', 'reset', wp_get_referer() ) );
-	        exit;
-        }
-    }
+				if ( isset( $_POST['require_unsubscribe_on_level_select'] ) ) {
+					$require_unsubscribe_on_leve_select = sanitize_text_field( $_POST['require_unsubscribe_on_level_select'] );
+					update_option( 'pmproecaddon_require_unsuscribe_on_level', $require_unsubscribe_on_leve_select );
+				}
+
+				if ( isset( $_POST['require_update_profile_select'] ) ) {
+					$require_update_profile_select = sanitize_text_field( $_POST['require_update_profile_select'] );
+					update_option( 'pmproecaddon_require_update_profile', $require_update_profile_select );
+				}
+			} else {
+				wp_safe_redirect( add_query_arg( 'pmproecaddon_msg', 'no_subscriptions', wp_get_referer() ) );
+				exit;
+			}
+		}
+		wp_safe_redirect( add_query_arg( 'pmproecaddon_msg', 'success', wp_get_referer() ) );
+		exit;
+	}
 }
 
 /**
@@ -201,21 +210,21 @@ function pmproecaddon_options_page() {
         <h2><?php _e( 'Subscribe users to one or more EmailChef audiences when they sign up for your site.', 'emailchef-add-on-for-pmp' ); ?></h2>
         <label><?php _e( 'If you have Paid Membership Pro installed, you can subscribe members to one or more Emailchef audiences based on their membership level or specify "Opt-in Audiences" that members can select at membership checkout.', 'emailchef-add-on-for-pmp' ); ?></label>
 
-	    <?php
-	    if ( isset( $_GET['pmproecaddon_msg'] ) ) {
-		    if ( $_GET['pmproecaddon_msg'] == 'success' ) {
-			    echo '<div class="updated"><p>' . __( 'Configuration saved successfully.', 'emailchef-add-on-for-pmp' ) . '</p></div>';
-		    } if ( $_GET['pmproecaddon_msg'] == 'success' ) {
-			    echo '<div class="updated"><p>' . __( 'Configuration reset successfully.', 'emailchef-add-on-for-pmp' ) . '</p></div>';
-		    } elseif ( $_GET['pmproecaddon_msg'] == 'emailchef_credentials_wrong' ) {
-			    echo '<div class="error"><p>' . __( 'Emailchef credentials are wrong.', 'emailchef-add-on-for-pmp' ) . '</p></div>';
-		    } elseif ( $_GET['pmproecaddon_msg'] == 'no_subscriptions' ) {
-			    echo '<div class="error"><p>' . __( 'No PMPro subscriptions found.', 'emailchef-add-on-for-pmp' ) . '</p></div>';
-		    }
-	    }
-	    ?>
+		<?php
+		if ( isset( $_GET['pmproecaddon_msg'] ) ) {
+			if ( $_GET['pmproecaddon_msg'] == 'success' ) {
+				echo '<div class="updated"><p>' . __( 'Configuration saved successfully.', 'emailchef-add-on-for-pmp' ) . '</p></div>';
+			} elseif ( $_GET['pmproecaddon_msg'] == 'reset' ) {
+				echo '<div class="updated"><p>' . __( 'Configuration reset successfully.', 'emailchef-add-on-for-pmp' ) . '</p></div>';
+			} elseif ( $_GET['pmproecaddon_msg'] == 'emailchef_credentials_wrong' ) {
+				echo '<div class="error"><p>' . __( 'Emailchef credentials are wrong.', 'emailchef-add-on-for-pmp' ) . '</p></div>';
+			} elseif ( $_GET['pmproecaddon_msg'] == 'no_subscriptions' ) {
+				echo '<div class="error"><p>' . __( 'No PMPro subscriptions found.', 'emailchef-add-on-for-pmp' ) . '</p></div>';
+			}
+		}
+		?>
 
-        <form method="post" action="<?php echo admin_url("admin-post.php"); ?>">
+        <form method="post" action="<?php echo admin_url( "admin-post.php" ); ?>">
             <h2><?php _e( 'Login Emailchef', 'emailchef-add-on-for-pmp' ); ?></h2>
             <table border="0">
                 <tr>
@@ -231,7 +240,7 @@ function pmproecaddon_options_page() {
             </table>
             <br>
 			<?php
-			if ( $user_ec != "" && $password_ec != "" ) {
+			if ( 'yes' === get_option( 'pmproecaddon_plugin_user_enabled', 'no' ) ) {
 				pmproecaddon_load_list_ec();
 				$list_data              = get_option( 'pmproecaddon_list_data', '' );
 				$list_opt_in_audiences  = get_option( 'pmproecaddon_plugin_list_opt_in_audiences', '' );
@@ -338,8 +347,15 @@ function pmproecaddon_options_page() {
             <input type="hidden" name="action" value="pmproecaddon_save_data">
             <input type="submit" name="plugin_save" class="button button-primary"
                    value="<?php esc_attr_e( 'Save Settings', 'emailchef-add-on-for-pmp' ); ?>">
-            <input style="margin-left: 10px" type="submit" name="plugin_refresh" class="button button-primary"
-                   value="<?php esc_attr_e( 'Refresh', 'emailchef-add-on-for-pmp' ); ?>">
+        </form>
+
+
+        <form method="post" action="<?php echo admin_url('admin-post.php'); ?>" style="margin-top: 20px;">
+            <input type="hidden" name="action" value="pmproecaddon_reset_options">
+		    <?php wp_nonce_field( 'pmproecaddon-reset-nonce', 'pmproecaddon-reset-nonce' ); ?>
+            <input type="submit" name="plugin_reset" class="button button-secondary"
+                   value="<?php esc_attr_e( 'Reset Settings', 'emailchef-add-on-for-pmp' ); ?>"
+                   onclick="return confirm('<?php esc_attr_e( 'Are you sure you want to reset all settings?', 'emailchef-add-on-for-pmp' ); ?>');">
         </form>
     </div>
 	<?php

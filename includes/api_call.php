@@ -256,5 +256,11 @@ function pmproecaddon_login( $emailchef_user, $emailchef_passww ) {
 		return false;
 	}
 
+	$body = json_decode(wp_remote_retrieve_body($response), true);
+
+	if (isset($body["message"]) && $body["message"] === "error_credential_wrong"){
+		return false;
+	}
+
 	return true;
 }
