@@ -8,7 +8,7 @@
  * Version: 1.0
  * Text Domain: emailchef-add-on-for-pmp
  * Domain Path: /languages/
- * Requires at least: 4.7
+ * Requires at least: 6.0
  * Tested up to: 6.5
  * Requires PHP: 7.0
  * License: GPLv2
@@ -656,6 +656,7 @@ add_action( 'wp_enqueue_scripts', 'pmproecaddon_enqueue_script' );
 function pmproecaddon_check_pmpro() {
 	if ( ! function_exists( 'pmpro_hasMembershipLevel' ) ) {
 		deactivate_plugins( plugin_basename( __FILE__ ) );
+		/* translators: %s: plugins page */
 		wp_die( __( 'This plugin requires Paid Memberships Pro. <a href="%s">Please go back to the Plugins page</a>.', 'emailchef-add-on-for-pmp' ), esc_url( admin_url( 'plugins.php' ) ) );
 	}
 }
