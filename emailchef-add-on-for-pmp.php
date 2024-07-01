@@ -1,18 +1,15 @@
 <?php
 /**
- * @link              https://emailchef.com/
- * @since             1.0.0
- *
- * @wordpress-plugin
  * Plugin Name: Emailchef Add On for Paid Memberships Pro
- * Plugin URI:        http://emailchef.com/
+ * Plugin URI: http://emailchef.com/
  * Description: Sync your WordPress users and members with Emaiclhef audiences.
- * Version: 1.0.0
  * Author: dueclic
- * Author URI:        https://www.dueclic.com
+ * Author URI: https://www.dueclic.com
+ * Version: 1.0
  * Text Domain: emailchef-add-on-for-pmp
- * Domain Path:       /languages
+ * Domain Path: /languages/
  * Requires at least: 4.7
+ * Tested up to: 6.5
  * Requires PHP: 7.0
  * License: GPLv2
  */
@@ -23,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 define( 'PMPROECADDON_DIR', dirname( __FILE__ ) );
 
-include( "includes/api_call.php" );
+require_once( "includes/api_call.php" );
 
 /**
  * Add checkbox for plugin
@@ -664,7 +661,6 @@ function pmproecaddon_check_pmpro() {
 }
 
 
-// Usa l'hook di attivazione per il tuo plugin
 register_activation_hook( __FILE__, 'pmproecaddon_check_pmpro' );
 
 function pmproecaddon_load_textdomain() {
