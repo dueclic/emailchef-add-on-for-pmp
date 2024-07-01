@@ -1,5 +1,5 @@
 === Emailchef Add On for Paid Memberships Pro ===
-Contributors: Edisplay, dueclic
+Contributors: edisplayit, dueclic
 Donate link: https://www.dueclic.com
 Tags: paid memberships pro, pmpro, emaiclhef, email marketing
 Requires at least: 6.0
