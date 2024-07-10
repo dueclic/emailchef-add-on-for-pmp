@@ -37,14 +37,14 @@ function pmproecaddon_list_ec_plugin_display( $name ) {
         <div class="checkbox-container">
 			<?php foreach ( $list_data as $list ) :
 				$list_name = str_replace( " ", "_", $list['name'] );
-				$name_checkbox = $name . '_' . $list_name."_checkbox";
+				$name_checkbox = $name . '_' . $list_name . "_checkbox";
 				$is_checked = isset( $list_config[ $name_checkbox ] ) && $list_config[ $name_checkbox ] == $list['id'];
 				?>
                 <label class="checkbox-item">
                     <input
                             class="input-checkbox"
                             type="checkbox"
-                            name="<?php echo esc_attr($name_checkbox); ?>"
+                            name="<?php echo esc_attr( $name_checkbox ); ?>"
                             value="<?php echo esc_attr( $list['id'] ); ?>"
 						<?php echo $is_checked ? 'checked' : ''; ?>
                     >
@@ -189,6 +189,8 @@ function pmproecaddon_options_page() {
 	$user_ec     = get_option( 'pmproecaddon_plugin_user_ec', '' );
 	$password_ec = get_option( 'pmproecaddon_plugin_pass_ec', '' );
 
+	$pmproecaddon_msg = sanitize_text_field( wp_unslash( $_GET['pmproecaddon_msg'] ) );
+
 	?>
     <div class="wrap pmproecaddon-options">
         <h1><?php esc_html_e( 'EmailChef Integration Options and Settings', 'emailchef-add-on-for-pmp' ); ?></h1>
@@ -196,14 +198,14 @@ function pmproecaddon_options_page() {
         <label><?php esc_html_e( 'If you have Paid Membership Pro installed, you can subscribe members to one or more Emailchef audiences based on their membership level or specify "Opt-in Audiences" that members can select at membership checkout.', 'emailchef-add-on-for-pmp' ); ?></label>
 
 		<?php
-		if ( isset( $_GET['pmproecaddon_msg'] ) ) {
-			if ( $_GET['pmproecaddon_msg'] == 'success' ) {
+		if ( ! empty( $pmproecaddon_msg ) ) {
+			if ( 'success' === $pmproecaddon_msg ) {
 				echo '<div class="updated"><p>' . esc_html__( 'Configuration saved successfully.', 'emailchef-add-on-for-pmp' ) . '</p></div>';
-			} elseif ( $_GET['pmproecaddon_msg'] == 'reset' ) {
+			} elseif ( 'reset' === $pmproecaddon_msg ) {
 				echo '<div class="updated"><p>' . esc_html__( 'Configuration reset successfully.', 'emailchef-add-on-for-pmp' ) . '</p></div>';
-			} elseif ( $_GET['pmproecaddon_msg'] == 'emailchef_credentials_wrong' ) {
+			} elseif ( 'emailchef_credentials_wrong' === $pmproecaddon_msg ) {
 				echo '<div class="error"><p>' . esc_html__( 'Emailchef credentials are wrong.', 'emailchef-add-on-for-pmp' ) . '</p></div>';
-			} elseif ( $_GET['pmproecaddon_msg'] == 'no_subscriptions' ) {
+			} elseif ( 'no_subscriptions' === $pmproecaddon_msg ) {
 				echo '<div class="error"><p>' . esc_html__( 'No PMPro subscriptions found.', 'emailchef-add-on-for-pmp' ) . '</p></div>';
 			}
 		}
@@ -264,8 +266,8 @@ function pmproecaddon_options_page() {
                         <td>
                             <div class="checkbox-container">
 								<?php foreach ( $list_data as $list ) :
-                                    $list_name =  str_replace( " ", "_", $list['name'] );
-									$name_checkbox = "opt_in_audiences_" . $list_name."_checkbox";
+									$list_name = str_replace( " ", "_", $list['name'] );
+									$name_checkbox = "opt_in_audiences_" . $list_name . "_checkbox";
 									$is_checked = isset( $list_opt_in_audiences[ $name_checkbox ] ) && $list_opt_in_audiences[ $name_checkbox ] == $list['id'];
 									?>
                                     <label class="checkbox-item">
@@ -412,13 +414,13 @@ function pmproecaddon_additional_lists_on_checkout() {
             <h3><?php esc_html_e( 'Join our mailing list.', 'emailchef-add-on-for-pmp' ); ?></h3>
             <div class="checkbox-container">
 				<?php foreach ( $list_data as $list ) :
-                    $list_name = str_replace( " ", "_", $list['name'] );
-					$name_checkbox = "opt_in_audiences_" . $list_name."_checkbox";
+					$list_name = str_replace( " ", "_", $list['name'] );
+					$name_checkbox = "opt_in_audiences_" . $list_name . "_checkbox";
 					?>
                     <label class="checkbox-item">
 						<?php if ( isset( $list_opt_in_audiences[ $name_checkbox ] ) && $list_opt_in_audiences[ $name_checkbox ] == $list['id'] ) : ?>
                             <input type="checkbox"
-                                   name="<?php echo esc_attr($name_checkbox); ?>"
+                                   name="<?php echo esc_attr( $name_checkbox ); ?>"
                                    value="<?php echo esc_attr( $list['id'] ); ?>">
 							<?php echo esc_html( $list['name'] ); ?>
 						<?php endif; ?>
@@ -483,13 +485,13 @@ function pmproecaddon_add_custom_user_profile_fields( $user ) {
             <h4><?php esc_html_e( 'Join our mailing list.', 'emailchef-add-on-for-pmp' ); ?></h4>
             <div class="checkbox-container">
 				<?php foreach ( $list_data as $list ) :
-                    $list_name = str_replace( " ", "_", $list['name'] );
-					$name_checkbox = "opt_in_audiences_" . $list_name."_checkbox";
+					$list_name = str_replace( " ", "_", $list['name'] );
+					$name_checkbox = "opt_in_audiences_" . $list_name . "_checkbox";
 					?>
                     <label class="checkbox-item">
 						<?php if ( isset( $list_opt_in_audiences[ $name_checkbox ] ) && $list_opt_in_audiences[ $name_checkbox ] == $list['id'] ) : ?>
                             <input type="checkbox"
-                                   name="<?php echo esc_attr($name_checkbox); ?>"
+                                   name="<?php echo esc_attr( $name_checkbox ); ?>"
                                    value="<?php echo esc_attr( $list['id'] ); ?>">
 							<?php echo esc_html( $list['name'] ); ?>
 						<?php endif; ?>
