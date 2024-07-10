@@ -36,18 +36,19 @@ function pmproecaddon_list_ec_plugin_display( $name ) {
     <td>
         <div class="checkbox-container">
 			<?php foreach ( $list_data as $list ) :
-				$name_checkbox = $name . '_' . esc_html( str_replace( " ", "_", $list['name'] ) );
+				$list_name = str_replace( " ", "_", $list['name'] );
+				$name_checkbox = $name . '_' . $list_name."_checkbox";
 				$is_checked = isset( $list_config[ $name_checkbox ] ) && $list_config[ $name_checkbox ] == $list['id'];
 				?>
                 <label class="checkbox-item">
                     <input
                             class="input-checkbox"
                             type="checkbox"
-                            name="<?php esc_html_e( $name ) . '_' . esc_html( str_replace( " ", "_", $list['name'] ) ); ?>_checkbox"
-                            value="<?php esc_html_e( $list['id'] ); ?>"
+                            name="<?php echo esc_attr($name_checkbox); ?>"
+                            value="<?php echo esc_attr( $list['id'] ); ?>"
 						<?php echo $is_checked ? 'checked' : ''; ?>
                     >
-					<?php esc_html_e( $list['name'] ); ?>
+					<?php echo esc_html( $list['name'] ); ?>
                 </label>
 			<?php endforeach; ?>
         </div>
@@ -74,7 +75,7 @@ add_action( 'admin_menu', 'pmproecaddon_admin_add_page' );
  */
 function pmproecaddon_menu( $links ) {
 	$new_links = array(
-		'<a href="' . esc_url( admin_url(  'options-general.php?page=pmproecaddon_options' ) ) . '">' . esc_html__( 'Settings', 'emailchef-add-on-for-pmp' ) . '</a>',
+		'<a href="' . esc_url( admin_url( 'options-general.php?page=pmproecaddon_options' ) ) . '">' . esc_html__( 'Settings', 'emailchef-add-on-for-pmp' ) . '</a>',
 	);
 
 	return array_merge( $new_links, $links );
@@ -101,6 +102,7 @@ function pmproecaddon_reset_options() {
 		exit;
 	}
 }
+
 add_action( 'admin_post_pmproecaddon_reset_options', 'pmproecaddon_reset_options' );
 
 function pmproecaddon_save_data() {
@@ -213,12 +215,12 @@ function pmproecaddon_options_page() {
                 <tr>
                     <td><label for="user_ec"><?php esc_html_e( 'User', 'emailchef-add-on-for-pmp' ); ?></label></td>
                     <td><input class="input-text" type="text" id="user_ec" name="user_ec"
-                               value="<?php esc_attr_e( $user_ec ); ?>"></td>
+                               value="<?php echo esc_attr( $user_ec ); ?>"></td>
                 </tr>
                 <tr>
                     <td><label for="pass_ec"><?php esc_html_e( 'Password', 'emailchef-add-on-for-pmp' ); ?></label></td>
                     <td><input class="input-text" type="password" id="pass_ec" name="pass_ec"
-                               value="<?php esc_attr_e( $password_ec ); ?>"></td>
+                               value="<?php echo esc_attr( $password_ec ); ?>"></td>
                 </tr>
             </table>
             <br>
@@ -235,46 +237,54 @@ function pmproecaddon_options_page() {
                 <h2><?php esc_html_e( 'General configuration', 'emailchef-add-on-for-pmp' ); ?></h2>
                 <table border="0">
                     <tr>
-                        <td><label for="nonmember_audiences"><?php esc_html_e( 'Nom-member Audiences', 'emailchef-add-on-for-pmp' ); ?></label></td>
+                        <td>
+                            <label for="nonmember_audiences"><?php esc_html_e( 'Nom-member Audiences', 'emailchef-add-on-for-pmp' ); ?></label>
+                        </td>
                         <td>
                             <div class="checkbox-container">
 								<?php foreach ( $list_data as $list ) :
-									$name_checkbox = "nom_member_audiences_" . esc_html( str_replace( " ", "_", $list['name'] ) );
+									$list_name = str_replace( " ", "_", $list['name'] );
+									$name_checkbox = "nom_member_audiences_" . $list_name . "_checkbox";
 									$is_checked = isset( $list_nom_member[ $name_checkbox ] ) && $list_nom_member[ $name_checkbox ] == $list['id'];
 									?>
                                     <label class="checkbox-item">
                                         <input id="nonmember_audiences" class="input-checkbox" type="checkbox"
-                                               name="<?php esc_html_e( 'nom_member_audiences_' . str_replace( " ", "_", $list['name'] ) ); ?>_checkbox"
-                                               value="<?php esc_html_e( $list['id'] ); ?>" <?php echo $is_checked ? 'checked' : ''; ?>>
-										<?php esc_html_e( $list['name'] ); ?>
+                                               name="<?php echo esc_attr( $name_checkbox ); ?>"
+                                               value="<?php echo esc_attr( $list['id'] ); ?>" <?php echo $is_checked ? 'checked' : ''; ?>>
+										<?php echo esc_html( $list['name'] ); ?>
                                     </label>
 								<?php endforeach; ?>
                             </div>
                         </td>
                     </tr>
                     <tr>
-                        <td><label for="optin_audiences"><?php esc_html_e( 'Opt-in Audiences', 'emailchef-add-on-for-pmp' ); ?></label></td>
+                        <td>
+                            <label for="optin_audiences"><?php esc_html_e( 'Opt-in Audiences', 'emailchef-add-on-for-pmp' ); ?></label>
+                        </td>
                         <td>
                             <div class="checkbox-container">
 								<?php foreach ( $list_data as $list ) :
-									$name_checkbox = "opt_in_audiences_" . esc_html( str_replace( " ", "_", $list['name'] ) );
+                                    $list_name =  str_replace( " ", "_", $list['name'] );
+									$name_checkbox = "opt_in_audiences_" . $list_name."_checkbox";
 									$is_checked = isset( $list_opt_in_audiences[ $name_checkbox ] ) && $list_opt_in_audiences[ $name_checkbox ] == $list['id'];
 									?>
                                     <label class="checkbox-item">
                                         <input id="optin_audiences" class="input-checkbox" type="checkbox"
-                                               name="<?php esc_html_e( 'opt_in_audiences_' . str_replace( " ", "_", $list['name'] ) ); ?>_checkbox"
-                                               value="<?php esc_html_e( $list['id'] ); ?>" <?php echo $is_checked ? 'checked' : ''; ?>>
-										<?php esc_html_e( $list['name'] ); ?>
+                                               name="<?php echo esc_attr( $name_checkbox ); ?>"
+                                               value="<?php echo esc_attr( $list['id'] ); ?>" <?php echo $is_checked ? 'checked' : ''; ?>>
+										<?php echo esc_html( $list['name'] ); ?>
                                     </label>
 								<?php endforeach; ?>
                             </div>
                         </td>
                     </tr>
                     <tr>
-                        <td><label for="unsubscribe_on_level_change"><?php esc_html_e( 'Unsubscribe on Level Change?', 'emailchef-add-on-for-pmp' ); ?></label>
+                        <td>
+                            <label for="unsubscribe_on_level_change"><?php esc_html_e( 'Unsubscribe on Level Change?', 'emailchef-add-on-for-pmp' ); ?></label>
                         </td>
                         <td>
-                            <select class="dropdown" id="unsubscribe_on_level_change" name="require_unsubscribe_on_level_select">
+                            <select class="dropdown" id="unsubscribe_on_level_change"
+                                    name="require_unsubscribe_on_level_select">
                                 <option value="yes_only_old_levels" <?php selected( $unsubscribe_on_level, "yes_only_old_levels" ); ?>><?php esc_html_e( 'Yes (Only old level audiences.)', 'emailchef-add-on-for-pmp' ); ?></option>
                                 <option value="yes_old_level" <?php selected( $unsubscribe_on_level, "yes_old_level" ); ?>><?php esc_html_e( 'Yes (Old level and opt-in audiences.)', 'emailchef-add-on-for-pmp' ); ?></option>
                                 <option value="no" <?php selected( $unsubscribe_on_level, "no", true ); ?>><?php esc_html_e( 'No', 'emailchef-add-on-for-pmp' ); ?></option>
@@ -288,7 +298,9 @@ function pmproecaddon_options_page() {
                         </td>
                     </tr>
                     <tr>
-                        <td><label for="update_profile_save"><?php esc_html_e( 'Update on Profile Save?', 'emailchef-add-on-for-pmp' ); ?></label></td>
+                        <td>
+                            <label for="update_profile_save"><?php esc_html_e( 'Update on Profile Save?', 'emailchef-add-on-for-pmp' ); ?></label>
+                        </td>
                         <td>
                             <select class="dropdown" id="update_profile_save" name="require_update_profile_select">
                                 <option value="yes" <?php selected( $require_update_profile, "yes" ); ?>><?php esc_html_e( 'Yes', 'emailchef-add-on-for-pmp' ); ?></option>
@@ -314,7 +326,7 @@ function pmproecaddon_options_page() {
                     <table border="0">
 						<?php foreach ( $subscriptions as $subscription ) : ?>
                             <tr>
-                                <td><label><?php esc_html_e( $subscription->name ); ?></label></td>
+                                <td><label><?php echo esc_html( $subscription->name ); ?></label></td>
 								<?php pmproecaddon_list_ec_plugin_display( str_replace( " ", "_", $subscription->name ) ); ?>
                             </tr>
 						<?php endforeach; ?>
@@ -333,9 +345,9 @@ function pmproecaddon_options_page() {
         </form>
 
 
-        <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" class="pmproecaddon-mt-20">
+        <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="pmproecaddon-mt-20">
             <input type="hidden" name="action" value="pmproecaddon_reset_options">
-		    <?php wp_nonce_field( 'pmproecaddon-reset-nonce', 'pmproecaddon-reset-nonce' ); ?>
+			<?php wp_nonce_field( 'pmproecaddon-reset-nonce', 'pmproecaddon-reset-nonce' ); ?>
             <input type="submit" name="plugin_reset" class="button button-secondary"
                    value="<?php esc_attr_e( 'Reset Settings', 'emailchef-add-on-for-pmp' ); ?>"
                    onclick="return confirm('<?php esc_attr_e( 'Are you sure you want to reset all settings?', 'emailchef-add-on-for-pmp' ); ?>');">
@@ -400,14 +412,15 @@ function pmproecaddon_additional_lists_on_checkout() {
             <h3><?php esc_html_e( 'Join our mailing list.', 'emailchef-add-on-for-pmp' ); ?></h3>
             <div class="checkbox-container">
 				<?php foreach ( $list_data as $list ) :
-					$name_checkbox = "opt_in_audiences_" . esc_html( str_replace( " ", "_", $list['name'] ) );
+                    $list_name = str_replace( " ", "_", $list['name'] );
+					$name_checkbox = "opt_in_audiences_" . $list_name."_checkbox";
 					?>
                     <label class="checkbox-item">
 						<?php if ( isset( $list_opt_in_audiences[ $name_checkbox ] ) && $list_opt_in_audiences[ $name_checkbox ] == $list['id'] ) : ?>
                             <input type="checkbox"
-                                   name="opt_in_audiences_<?php esc_html_e( str_replace( " ", "_", $list['name'] ) ); ?>_checkbox"
-                                   value="<?php esc_html_e( $list['id'] ); ?>">
-							<?php esc_html_e( $list['name'] ); ?>
+                                   name="<?php echo esc_attr($name_checkbox); ?>"
+                                   value="<?php echo esc_attr( $list['id'] ); ?>">
+							<?php echo esc_html( $list['name'] ); ?>
 						<?php endif; ?>
                     </label>
 				<?php endforeach; ?>
@@ -470,14 +483,15 @@ function pmproecaddon_add_custom_user_profile_fields( $user ) {
             <h4><?php esc_html_e( 'Join our mailing list.', 'emailchef-add-on-for-pmp' ); ?></h4>
             <div class="checkbox-container">
 				<?php foreach ( $list_data as $list ) :
-					$name_checkbox = "opt_in_audiences_" . esc_html( str_replace( " ", "_", $list['name'] ) );
+                    $list_name = str_replace( " ", "_", $list['name'] );
+					$name_checkbox = "opt_in_audiences_" . $list_name."_checkbox";
 					?>
                     <label class="checkbox-item">
 						<?php if ( isset( $list_opt_in_audiences[ $name_checkbox ] ) && $list_opt_in_audiences[ $name_checkbox ] == $list['id'] ) : ?>
                             <input type="checkbox"
-                                   name="opt_in_audiences_<?php esc_html_e( str_replace( " ", "_", $list['name'] ) ); ?>_checkbox"
-                                   value="<?php esc_html_e( $list['id'] ); ?>">
-							<?php esc_html_e( $list['name'] ); ?>
+                                   name="<?php echo esc_attr($name_checkbox); ?>"
+                                   value="<?php echo esc_attr( $list['id'] ); ?>">
+							<?php echo esc_html( $list['name'] ); ?>
 						<?php endif; ?>
                     </label>
 				<?php endforeach; ?>
@@ -640,7 +654,7 @@ function pmproecaddon_enqueue_script( $text ) {
 add_action( 'wp_enqueue_scripts', 'pmproecaddon_enqueue_script' );
 
 function pmproecaddon_admin_style() {
-	wp_enqueue_style( 'admin_css', plugins_url( '/css/pmproecaddon.css', __FILE__), false, '1.0.0' );
+	wp_enqueue_style( 'admin_css', plugins_url( '/css/pmproecaddon.css', __FILE__ ), false, '1.0.0' );
 }
 
 
