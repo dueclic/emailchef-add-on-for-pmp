@@ -1,3 +1,3 @@
 .gitignore export-ignore
 .gitattributes export-ignore
-generate_archives.sh export-ignore
+generate_archive.sh export-ignore
