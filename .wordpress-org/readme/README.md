@@ -31,15 +31,15 @@ The settings page allows the site admin to specify which audience lists to assig
 * **Log API Calls?:** If set to “Yes”, API calls to Emailchef will be logged in the `/pmpro-emailchef/logs` folder.
 * **Membership Levels and Audiences:** These are the audiences that users will automatically be subscribed to when they receive a membership level.
 
-## Installation 
+## Installation
 This plugin works with and without Paid Memberships Pro installed.
 
-### Download, Install and Activate! 
+### Download, Install and Activate!
 1. Upload the `emailchef-add-on-for-pmp` directory to the `/wp-content/plugins/` directory of your site.
 2. Activate the plugin through the 'Plugins' menu in WordPress.
 3. Navigate to Settings > PMPro Emailchef to proceed with setup.
 
-## Configuration and Settings 
+## Configuration and Settings
 
 **Enter your Emailchef email and password:**.
 
@@ -51,7 +51,7 @@ Several action and filter hooks are available for developers that need to custom
 
 ## Frequently Asked Questions
 
-### I need help installing, configuring, or customizing the plugin. 
+### I need help installing, configuring, or customizing the plugin.
 
 Please visit [our support site at https://www.paidmembershipspro.com](http://www.paidmembershipspro.com/) for more documentation and our support forums.
 

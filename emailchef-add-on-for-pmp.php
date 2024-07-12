@@ -193,8 +193,8 @@ function pmproecaddon_options_page() {
 
 	?>
     <div class="wrap pmproecaddon-options">
-        <h1><?php esc_html_e( 'EmailChef Integration Options and Settings', 'emailchef-add-on-for-pmp' ); ?></h1>
-        <h2><?php esc_html_e( 'Subscribe users to one or more EmailChef audiences when they sign up for your site.', 'emailchef-add-on-for-pmp' ); ?></h2>
+        <h1><?php esc_html_e( 'Emailchef Integration Options and Settings', 'emailchef-add-on-for-pmp' ); ?></h1>
+        <h2><?php esc_html_e( 'Subscribe users to one or more Emailchef audiences when they sign up for your site.', 'emailchef-add-on-for-pmp' ); ?></h2>
         <label><?php esc_html_e( 'If you have Paid Membership Pro installed, you can subscribe members to one or more Emailchef audiences based on their membership level or specify "Opt-in Audiences" that members can select at membership checkout.', 'emailchef-add-on-for-pmp' ); ?></label>
 
 		<?php
@@ -296,7 +296,7 @@ function pmproecaddon_options_page() {
                     <tr>
                         <td></td>
                         <td>
-                            <label><?php esc_html_e( 'Recommended: Yes. However, if you manage multiple audiences in EmailChef, unsubscribed from other audiences when they register on your site.', 'emailchef-add-on-for-pmp' ); ?></label>
+                            <label><?php esc_html_e( 'Recommended: Yes. However, if you manage multiple audiences in Emailchef, unsubscribed from other audiences when they register on your site.', 'emailchef-add-on-for-pmp' ); ?></label>
                         </td>
                     </tr>
                     <tr>
@@ -313,7 +313,7 @@ function pmproecaddon_options_page() {
                     <tr>
                         <td></td>
                         <td>
-                            <label><?php esc_html_e( 'Choosing \'No\' will still update EmailChef when user\'s level is changed, email is.', 'emailchef-add-on-for-pmp' ); ?></label>
+                            <label><?php esc_html_e( 'Choosing \'No\' will still update Emailchef when user\'s level is changed, email is.', 'emailchef-add-on-for-pmp' ); ?></label>
                         </td>
                     </tr>
                 </table>

@@ -21,10 +21,10 @@ msgstr "Sei sicuro di voler reimpostare tutte le impostazioni?"
 
 #: emailchef-add-on-for-pmp.php:316
 msgid ""
-"Choosing 'No' will still update EmailChef when user's level is changed, "
+"Choosing 'No' will still update Emailchef when user's level is changed, "
 "email is."
 msgstr ""
-"Scegliendo 'No' EmailChef si aggiornerà comunque quando il livello dell'utente viene modificato, l'email è."
+"Scegliendo 'No' Emailchef si aggiornerà comunque quando il livello dell'utente viene modificato, l'email è."
 
 #: emailchef-add-on-for-pmp.php:215
 msgid "Configuration reset successfully."
@@ -47,8 +47,8 @@ msgid "Emailchef credentials are wrong."
 msgstr "Le credenziali di Emailchef sono errate."
 
 #: emailchef-add-on-for-pmp.php:206
-msgid "EmailChef Integration Options and Settings"
-msgstr "Opzioni e Impostazioni di Integrazione EmailChef"
+msgid "Emailchef Integration Options and Settings"
+msgstr "Opzioni e Impostazioni di Integrazione Emailchef"
 
 #: emailchef-add-on-for-pmp.php:327
 msgid ""
@@ -115,10 +115,10 @@ msgstr "PMPro è installato."
 
 #: emailchef-add-on-for-pmp.php:301
 msgid ""
-"Recommended: Yes. However, if you manage multiple audiences in EmailChef, "
+"Recommended: Yes. However, if you manage multiple audiences in Emailchef, "
 "unsubscribed from other audiences when they register on your site."
 msgstr ""
-"Consigliato: Sì. Tuttavia, se gestisci più pubblici in EmailChef, disiscritto dagli altri pubblici quando si registrano sul tuo sito."
+"Consigliato: Sì. Tuttavia, se gestisci più pubblici in Emailchef, disiscritto dagli altri pubblici quando si registrano sul tuo sito."
 
 #: emailchef-add-on-for-pmp.php:354
 msgid "Reset Settings"
@@ -134,10 +134,10 @@ msgstr "Impostazioni"
 
 #: emailchef-add-on-for-pmp.php:207
 msgid ""
-"Subscribe users to one or more EmailChef audiences when they sign up for "
+"Subscribe users to one or more Emailchef audiences when they sign up for "
 "your site."
 msgstr ""
-"Iscrivi gli utenti a uno o più pubblici EmailChef quando si registrano sul tuo sito."
+"Iscrivi gli utenti a uno o più pubblici Emailchef quando si registrano sul tuo sito."
 
 #. Description of the plugin
 msgid "Sync your WordPress users and members with Emaiclhef audiences."
