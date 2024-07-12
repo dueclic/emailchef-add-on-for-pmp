@@ -1,18 +1,5 @@
-=== Emailchef Add On for Paid Memberships Pro ===
-Contributors: edisplayit, dueclic
-Donate link: https://www.dueclic.com
-Tags: paid memberships pro, pmpro, emailchef, email marketing
-Requires at least: 6.0
-Tested up to: 6.5
-Stable tag: 1.0.0
-Requires PHP: 7.0
-License: GPLv2
-License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Plugin URI: https://emailchef.com/it/add-on-emailchef-per-wordpress-paid-memberships-pro/
-
-Add users and members to Emailchef audiences based on their membership level and allow members to opt-in to specific audiences.
-
-## Description
+[![Emailchef](https://raw.githubusercontent.com/dueclic/emailchef-add-on-for-pmp/assets/banner-772x250.png)
+](https://www.emailchef.com)
 
 Subscribe WordPress users and members to your Emailchef audiences.
 

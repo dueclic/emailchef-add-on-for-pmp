@@ -4,7 +4,7 @@ Donate link: https://www.dueclic.com
 Tags: paid memberships pro, pmpro, emailchef, email marketing
 Requires at least: 6.0
 Tested up to: 6.5
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 Requires PHP: 7.0
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -59,3 +59,7 @@ Please visit [our support site at https://www.paidmembershipspro.com](http://www
 
 1. General Settings for plugin, including the non-member audiences opt-in rules, and unsubscribe rules.
 2. Specific settings for Membership Levels and Audiences.
+
+## Changelog
+
+* 1.1.0 Added assets and screenshots

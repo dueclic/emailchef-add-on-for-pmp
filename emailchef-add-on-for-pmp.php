@@ -3,9 +3,9 @@
  * Plugin Name: Emailchef Add On for Paid Memberships Pro
  * Plugin URI: https://emailchef.com/it/add-on-emailchef-per-wordpress-paid-memberships-pro/
  * Description: Sync your WordPress users and members with Emaiclhef audiences.
- * Author: dueclic
+ * Author: edisplayit
  * Author URI: https://www.dueclic.com
- * Version: 1.0.0
+ * Version: 1.1.0
  * Text Domain: emailchef-add-on-for-pmp
  * Domain Path: /languages/
  * Requires at least: 6.0

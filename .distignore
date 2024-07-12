@@ -1,0 +1,8 @@
+/.wordpress-org
+/.git
+/.github
+/node_modules
+/src
+.distignore
+.gitignore
+generate_archive.sh
