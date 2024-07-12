@@ -1,7 +1,7 @@
 === Emailchef Add On for Paid Memberships Pro ===
 Contributors: edisplayit, dueclic
 Donate link: https://www.dueclic.com
-Tags: paid memberships pro, pmpro, emaiclhef, email marketing
+Tags: paid memberships pro, pmpro, emailchef, email marketing
 Requires at least: 6.0
 Tested up to: 6.5
 Stable tag: 1.0.0
