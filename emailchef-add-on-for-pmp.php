@@ -4,8 +4,8 @@
  * Plugin URI: https://emailchef.com/it/add-on-emailchef-per-wordpress-paid-memberships-pro/
  * Description: Sync your WordPress users and members with Emaiclhef audiences.
  * Author: edisplayit
- * Author URI: https://www.dueclic.com
- * Version: 1.1.0
+ * Author URI: https://www.emailchef.com
+ * Version: 1.2.0
  * Text Domain: emailchef-add-on-for-pmp
  * Domain Path: /languages/
  * Requires at least: 6.0
@@ -193,6 +193,9 @@ function pmproecaddon_options_page() {
 
 	?>
     <div class="wrap pmproecaddon-options">
+
+        <img src="<?php echo plugins_url('img/logo.png', __FILE__); ?>" alt="Emailchef">
+
         <h1><?php esc_html_e( 'Emailchef Integration Options and Settings', 'emailchef-add-on-for-pmp' ); ?></h1>
         <h2><?php esc_html_e( 'Subscribe users to one or more Emailchef audiences when they sign up for your site.', 'emailchef-add-on-for-pmp' ); ?></h2>
         <label><?php esc_html_e( 'If you have Paid Membership Pro installed, you can subscribe members to one or more Emailchef audiences based on their membership level or specify "Opt-in Audiences" that members can select at membership checkout.', 'emailchef-add-on-for-pmp' ); ?></label>
