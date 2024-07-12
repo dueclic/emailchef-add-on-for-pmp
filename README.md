@@ -1,4 +1,4 @@
-[![Emailchef](https://raw.githubusercontent.com/dueclic/emailchef-add-on-for-pmp/assets/banner-772x250.png)
+[![Emailchef](https://github.com/dueclic/emailchef-add-on-for-pmp/blob/main/.wordpress-org/assets/banner-772x250.png?raw=true)
 ](https://www.emailchef.com)
 
 Subscribe WordPress users and members to your Emailchef audiences.
