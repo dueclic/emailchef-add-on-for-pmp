@@ -44,7 +44,7 @@ msgstr "edisplayit"
 
 #. Name of the plugin
 msgid "Emailchef Add On for Paid Memberships Pro"
-msgstr "Emailchef Add On per Paid Memberships Pro"
+msgstr "Emailchef Add On for Paid Memberships Pro"
 
 #: emailchef-add-on-for-pmp.php:210
 msgid "Emailchef credentials are wrong."
@@ -94,7 +94,7 @@ msgstr "Iscriviti alla nostra mailing list."
 
 #: emailchef-add-on-for-pmp.php:218
 msgid "Login Emailchef"
-msgstr "Accesso Emailchef"
+msgstr "Accesso a Emailchef"
 
 #: emailchef-add-on-for-pmp.php:328
 msgid "Membership Levels and Audiences"

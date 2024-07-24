@@ -4,7 +4,7 @@ Donate link: https://www.emailchef.com
 Tags: paid memberships pro, pmpro, emailchef, email marketing
 Requires at least: 6.0
 Tested up to: 6.6
-Stable tag: 1.3.0
+Stable tag: 1.4.0
 Requires PHP: 7.0
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -62,6 +62,7 @@ Please visit [our support site at https://www.paidmembershipspro.com](http://www
 
 ## Changelog
 
+* 1.4.0 check PMPRO activation fix
 * 1.3.0 i18n fixes
 * 1.2.0 Small fixes
 * 1.1.0 Added assets and screenshots

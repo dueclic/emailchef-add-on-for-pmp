@@ -5,7 +5,7 @@
  * Description: Sync your WordPress users and members with Emaiclhef audiences.
  * Author: edisplayit
  * Author URI: https://www.emailchef.com
- * Version: 1.3.0
+ * Version: 1.4.0
  * Text Domain: emailchef-add-on-for-pmp
  * Domain Path: /languages/
  * Requires at least: 6.0
@@ -669,7 +669,7 @@ function pmproecaddon_check_pmpro() {
 	if ( ! function_exists( 'pmpro_hasMembershipLevel' ) ) {
 		deactivate_plugins( plugin_basename( __FILE__ ) );
 		/* translators: %s: plugins page */
-		wp_die( esc_html__( 'This plugin requires Paid Memberships Pro. <a href="%s">Please go back to the Plugins page</a>.', 'emailchef-add-on-for-pmp' ), esc_url( admin_url( 'plugins.php' ) ) );
+		wp_die( __( 'This plugin requires Paid Memberships Pro. <a href="%s">Please go back to the Plugins page</a>.', 'emailchef-add-on-for-pmp' ), esc_url( admin_url( 'plugins.php' ) ) );
 	}
 }
 
