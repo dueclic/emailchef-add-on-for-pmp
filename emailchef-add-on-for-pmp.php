@@ -1,15 +1,15 @@
 <?php
 /**
  * Plugin Name: Emailchef Add On for Paid Memberships Pro
- * Plugin URI: https://emailchef.com/it/add-on-emailchef-per-wordpress-paid-memberships-pro/
+ * Plugin URI: https://emailchef.com/wordpress-paid-memberships-pro-emailchef-add-on/
  * Description: Sync your WordPress users and members with Emaiclhef audiences.
  * Author: edisplayit
  * Author URI: https://www.emailchef.com
- * Version: 1.2.0
+ * Version: 1.3.0
  * Text Domain: emailchef-add-on-for-pmp
  * Domain Path: /languages/
  * Requires at least: 6.0
- * Tested up to: 6.5
+ * Tested up to: 6.6
  * Requires PHP: 7.0
  * License: GPLv2
  */
@@ -132,13 +132,13 @@ function pmproecaddon_save_data() {
 		$list_data             = get_option( 'pmproecaddon_list_data', '' );
 
 		if ( $list_data != null ) {
-			$subscriptions = pmpro_getAllLevels();
-			if ( ! empty( $subscriptions ) ) {
-				foreach ( $subscriptions as $subscription ) {
+			$membership_levels = pmpro_getAllLevels();
+			if ( ! empty( $membership_levels ) ) {
+				foreach ( $membership_levels as $membership_level ) {
 					foreach ( $list_data as $list ) {
-						$checkbox_name = str_replace( " ", "_", $subscription->name ) . '_' . str_replace( " ", "_", $list['name'] ) . '_checkbox';
+						$checkbox_name = str_replace( " ", "_", $membership_level->name ) . '_' . str_replace( " ", "_", $list['name'] ) . '_checkbox';
 						if ( isset( $_POST[ $checkbox_name ] ) ) {
-							$list_config[ str_replace( " ", "_", $subscription->name . "_" . str_replace( " ", "_", $list['name'] ) ) ] = sanitize_text_field( $_POST[ $checkbox_name ] );
+							$list_config[ str_replace( " ", "_", $membership_level->name . "_" . str_replace( " ", "_", $list['name'] ) ) ] = sanitize_text_field( $_POST[ $checkbox_name ] );
 						}
 					}
 				}
@@ -170,7 +170,7 @@ function pmproecaddon_save_data() {
 					update_option( 'pmproecaddon_require_update_profile', $require_update_profile_select );
 				}
 			} else {
-				wp_safe_redirect( add_query_arg( 'pmproecaddon_msg', 'no_subscriptions', wp_get_referer() ) );
+				wp_safe_redirect( add_query_arg( 'pmproecaddon_msg', 'no_membership_levels', wp_get_referer() ) );
 				exit;
 			}
 		}
@@ -196,7 +196,7 @@ function pmproecaddon_options_page() {
 
         <img src="<?php echo plugins_url('img/logo.png', __FILE__); ?>" alt="Emailchef">
 
-        <h1><?php esc_html_e( 'Emailchef Integration Options and Settings', 'emailchef-add-on-for-pmp' ); ?></h1>
+        <h1><?php esc_html_e( 'Emailchef integration options and settings', 'emailchef-add-on-for-pmp' ); ?></h1>
         <h2><?php esc_html_e( 'Subscribe users to one or more Emailchef audiences when they sign up for your site.', 'emailchef-add-on-for-pmp' ); ?></h2>
         <label><?php esc_html_e( 'If you have Paid Membership Pro installed, you can subscribe members to one or more Emailchef audiences based on their membership level or specify "Opt-in Audiences" that members can select at membership checkout.', 'emailchef-add-on-for-pmp' ); ?></label>
 
@@ -208,8 +208,8 @@ function pmproecaddon_options_page() {
 				echo '<div class="updated"><p>' . esc_html__( 'Configuration reset successfully.', 'emailchef-add-on-for-pmp' ) . '</p></div>';
 			} elseif ( 'emailchef_credentials_wrong' === $pmproecaddon_msg ) {
 				echo '<div class="error"><p>' . esc_html__( 'Emailchef credentials are wrong.', 'emailchef-add-on-for-pmp' ) . '</p></div>';
-			} elseif ( 'no_subscriptions' === $pmproecaddon_msg ) {
-				echo '<div class="error"><p>' . esc_html__( 'No PMPro subscriptions found.', 'emailchef-add-on-for-pmp' ) . '</p></div>';
+			} elseif ( 'no_membership_levels' === $pmproecaddon_msg ) {
+				echo '<div class="error"><p>' . esc_html__( 'No available membership levels found in PMPro.', 'emailchef-add-on-for-pmp' ) . '</p></div>';
 			}
 		}
 		?>
@@ -316,7 +316,7 @@ function pmproecaddon_options_page() {
                     <tr>
                         <td></td>
                         <td>
-                            <label><?php esc_html_e( 'Choosing \'No\' will still update Emailchef when user\'s level is changed, email is.', 'emailchef-add-on-for-pmp' ); ?></label>
+                            <label><?php esc_html_e( "Choosing 'No' will still update Emailchef when the user's level is changed.", 'emailchef-add-on-for-pmp' ); ?></label>
                         </td>
                     </tr>
                 </table>
@@ -346,7 +346,7 @@ function pmproecaddon_options_page() {
 			<?php wp_nonce_field( 'pmproecaddon-nonce', 'pmproecaddon-nonce' ); ?>
             <input type="hidden" name="action" value="pmproecaddon_save_data">
             <input type="submit" name="plugin_save" class="button button-primary"
-                   value="<?php esc_attr_e( 'Save Settings', 'emailchef-add-on-for-pmp' ); ?>">
+                   value="<?php esc_attr_e( 'Save settings', 'emailchef-add-on-for-pmp' ); ?>">
         </form>
 
 
@@ -354,8 +354,8 @@ function pmproecaddon_options_page() {
             <input type="hidden" name="action" value="pmproecaddon_reset_options">
 			<?php wp_nonce_field( 'pmproecaddon-reset-nonce', 'pmproecaddon-reset-nonce' ); ?>
             <input type="submit" name="plugin_reset" class="button button-secondary"
-                   value="<?php esc_attr_e( 'Reset Settings', 'emailchef-add-on-for-pmp' ); ?>"
-                   onclick="return confirm('<?php esc_attr_e( 'Are you sure you want to reset all settings?', 'emailchef-add-on-for-pmp' ); ?>');">
+                   value="<?php esc_attr_e( 'Reset settings', 'emailchef-add-on-for-pmp' ); ?>"
+                   onclick="return confirm('<?php esc_attr_e( 'Are you sure you want to reset all the settings?', 'emailchef-add-on-for-pmp' ); ?>');">
         </form>
     </div>
 	<?php
