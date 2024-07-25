@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Emailchef Add On for Paid Memberships Pro\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-07-01 08:49+0000\n"
-"PO-Revision-Date: 2024-07-25 12:06+0000\n"
+"PO-Revision-Date: 2024-07-25 12:26+0000\n"
 "Last-Translator: admin\n"
 "Language-Team: Italian\n"
 "Language: it_IT\n"
@@ -56,12 +56,15 @@ msgid "Emailchef integration options and settings"
 msgstr "Opzioni e impostazioni di integrazione con Emailchef"
 
 #: emailchef-add-on-for-pmp.php:330
+#| msgid ""
+#| "For each level below, choose the audience(s) that a new user should be "
+#| "subscribed to when they register."
 msgid ""
-"For each level below, choose the audience(s) that a new user should be "
+"For each level below, choose the list(s) that a new user should be "
 "subscribed to when they register."
 msgstr ""
-"Per ciascun livello sottostante, scegli il pubblico a cui un nuovo utente "
-"dovrebbe iscriversi quando si registra."
+"Per ciascun livello sottostante, scegli la lista o le liste a cui un nuovo "
+"utente dovrebbe iscriversi quando si registra."
 
 #: emailchef-add-on-for-pmp.php:242
 msgid "General configuration"
@@ -78,15 +81,20 @@ msgid "https://www.emailchef.com"
 msgstr "https://www.emailchef.com/it"
 
 #: emailchef-add-on-for-pmp.php:201
+#| msgid ""
+#| "If you have Paid Membership Pro installed, you can subscribe members to "
+#| "one or more Emailchef audiences based on their membership level or "
+#| "specify \"Opt-in Audiences\" that members can select at membership "
+#| "checkout."
 msgid ""
 "If you have Paid Membership Pro installed, you can subscribe members to one "
-"or more Emailchef audiences based on their membership level or specify \"Opt-"
-"in Audiences\" that members can select at membership checkout."
+"or more Emailchef lists based on their membership level or specify \"Opt-in "
+"Lists\" that members can select at membership checkout."
 msgstr ""
 "Se hai installato Paid Membership Pro, puoi iscrivere i membri a uno o più "
-"pubblici Emailchef in base al loro livello di appartenenza o specificare "
-"\"Pubblici Opt-in\" che i membri possono selezionare al momento del "
-"pagamento dell'abbonamento."
+"liste di Emailchef in base al loro livello di appartenenza o specificare "
+"\"Liste Opt-in\" che i membri possono selezionare al momento del pagamento "
+"dell'abbonamento."
 
 #: emailchef-add-on-for-pmp.php:417 emailchef-add-on-for-pmp.php:488
 msgid "Join our mailing list."
@@ -97,24 +105,25 @@ msgid "Login Emailchef"
 msgstr "Accesso a Emailchef"
 
 #: emailchef-add-on-for-pmp.php:328
-msgid "Membership Levels and Audiences"
-msgstr "Livelli di Abbonamento e Pubblici"
+#| msgid "Membership Levels and Audiences"
+msgid "Membership Levels and Lists"
+msgstr "Livelli di Membership e Liste"
 
 #: emailchef-add-on-for-pmp.php:295 emailchef-add-on-for-pmp.php:312
 msgid "No"
 msgstr "No"
 
-#: emailchef-add-on-for-pmp.php:212
+#: emailchef-add-on-for-pmp.php:212 emailchef-add-on-for-pmp.php:341
 msgid "No available membership levels found in PMPro."
 msgstr "Nessun livello di membership disponibile trovato in PMPro."
 
 #: emailchef-add-on-for-pmp.php:246
-msgid "Nom-member Audiences"
-msgstr "Pubblici per Non-membri"
+msgid "Non-member Lists"
+msgstr "Liste per i non membri"
 
 #: emailchef-add-on-for-pmp.php:267
-msgid "Opt-in Audiences"
-msgstr "Pubblici Opt-in"
+msgid "Opt-in Lists"
+msgstr "Liste Opt-in"
 
 #: emailchef-add-on-for-pmp.php:226
 msgid "Password"
@@ -125,12 +134,15 @@ msgid "PMPro is installed."
 msgstr "PMPro è installato."
 
 #: emailchef-add-on-for-pmp.php:302
+#| msgid ""
+#| "Recommended: Yes. However, if you manage multiple lists in Emailchef, "
+#| "unsubscribed from other lists when they register on your site."
 msgid ""
-"Recommended: Yes. However, if you manage multiple audiences in Emailchef, "
-"unsubscribed from other audiences when they register on your site."
+"Recommended: Yes. However, if you manage multiple lists in Emailchef, users "
+"will be unsubscribed from other lists when they register on your site."
 msgstr ""
-"Consigliato: Sì. Tuttavia, se gestisci più pubblici in Emailchef, "
-"disiscritto dagli altri pubblici quando si registrano sul tuo sito."
+"Consigliato: Sì. Tuttavia, se gestisci più liste in Emailchef, gli utenti "
+"verranno disiscritti dalle altre liste quando si registrano sul tuo sito."
 
 #: emailchef-add-on-for-pmp.php:357
 #| msgid "Reset Settings"
@@ -147,17 +159,21 @@ msgid "Settings"
 msgstr "Impostazioni"
 
 #: emailchef-add-on-for-pmp.php:200
+#| msgid ""
+#| "Subscribe users to one or more Emailchef audiences when they sign up for "
+#| "your site."
 msgid ""
-"Subscribe users to one or more Emailchef audiences when they sign up for "
-"your site."
+"Subscribe users to one or more Emailchef lists when they sign up for your "
+"site."
 msgstr ""
-"Iscrivi gli utenti a uno o più pubblici Emailchef quando si registrano sul "
+"Iscrivi gli utenti a uno o più liste di Emailchef quando si registrano sul "
 "tuo sito."
 
 #. Description of the plugin
-msgid "Sync your WordPress users and members with Emaiclhef audiences."
+#| msgid "Sync your WordPress users and members with Emaiclhef audiences."
+msgid "Sync your WordPress users and members with Emailchef lists."
 msgstr ""
-"Sincronizza i tuoi utenti e membri di WordPress con i pubblici di Emailchef."
+"Sincronizza i tuoi utenti e membri di WordPress con le liste di Emailchef."
 
 #. %s: plugins page
 #: emailchef-add-on-for-pmp.php:672
@@ -186,9 +202,11 @@ msgid "Yes"
 msgstr "Sì"
 
 #: emailchef-add-on-for-pmp.php:294
-msgid "Yes (Old level and opt-in audiences.)"
-msgstr "Sì (Vecchio livello e pubblici opt-in.)"
+#| msgid "Yes (Old level and opt-in audiences.)"
+msgid "Yes (Old level and opt-in lists.)"
+msgstr "Sì (Vecchio livello e liste opt-in.)"
 
 #: emailchef-add-on-for-pmp.php:293
-msgid "Yes (Only old level audiences.)"
-msgstr "Sì (Solo pubblici del vecchio livello.)"
+#| msgid "Yes (Only old level audiences.)"
+msgid "Yes (Only old level lists.)"
+msgstr "Sì (Solo liste del vecchio livello.)"
