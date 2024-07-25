@@ -22,7 +22,7 @@ The settings page allows the site admin to specify which lists to assign users a
 * **Membership Levels and Lists:** These are the lists that users will automatically be subscribed to when they receive a membership level.
 
 ## Installation
-This plugin works with and without Paid Memberships Pro installed.
+This plugin works with Paid Memberships Pro installed.
 
 ### Download, Install and Activate!
 1. Upload the `emailchef-add-on-for-pmp` directory to the `/wp-content/plugins/` directory of your site.
