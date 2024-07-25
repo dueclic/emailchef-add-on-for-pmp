@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Emailchef Add On for Paid Memberships Pro\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-24 10:21+0000\n"
+"POT-Creation-Date: 2024-07-25 12:06+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -92,10 +92,6 @@ msgstr ""
 
 #: emailchef-add-on-for-pmp.php:212
 msgid "No available membership levels found in PMPro."
-msgstr ""
-
-#: emailchef-add-on-for-pmp.php:341
-msgid "No PMPro subscriptions found."
 msgstr ""
 
 #: emailchef-add-on-for-pmp.php:246

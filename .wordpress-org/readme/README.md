@@ -4,32 +4,31 @@ Donate link: https://www.emailchef.com
 Tags: paid memberships pro, pmpro, emailchef, email marketing
 Requires at least: 6.0
 Tested up to: 6.6
-Stable tag: 1.4.0
+Stable tag: 1.5.0
 Requires PHP: 7.0
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Plugin URI: https://emailchef.com/wordpress-paid-memberships-pro-emailchef-add-on/
 
-Add users and members to Emailchef audiences based on their membership level and allow members to opt-in to specific audiences.
+Add users and members to Emailchef lists based on their membership level and allow members to opt-in to specific lists.
 
 ## Description
 
-Subscribe WordPress users and members to your Emailchef audiences.
+Subscribe WordPress users and members to your Emailchef lists.
 
 This plugin offers extended functionality for [membership websites using the Paid Memberships Pro plugin](https://wordpress.org/plugins/paid-memberships-pro/) available for free in the WordPress plugin repository.
 
-With Paid Memberships Pro installed, you can specify unique audiences for each membership level, as well as opt-in audiences that a member can join as part of checkout or by editing their user profile. By default, the integration will merge the user's email address and membership level information.
+With Paid Memberships Pro installed, you can specify unique lists for each membership level, as well as opt-in lists that a member can join as part of checkout or by editing their user profile. By default, the integration will merge the user's email address and membership level information.
 
-The settings page allows the site admin to specify which audience lists to assign users and members to plus additional features  you may wish to adjust. The first step is to connect your website to Emailchef using your email and password.
+The settings page allows the site admin to specify which lists to assign users and members to plus additional features  you may wish to adjust. The first step is to connect your website to Emailchef using your email and password.
 
 ## Additional Settings
 
-* **Non-member Audiences:** These are the audiences that users will be added to if they do not have a membership level. They will also be removed from these audiences when they gain a membership level (assuming the audiences are not also set in the “Membership Levels and Audiences” option for their new level).
-* **Opt-in Audiences:** These are the audiences that users will have the option to subscribe to during the PMPro checkout process. Users are later able to update their choice from their profile. Audiences set as Opt-in Audiences should not also be set as a Non-member Audience nor a Level Audience.
-* **Unsubscribe on Level Change?:** If set to “No”, users will not be automatically unsubscribed from any audiences when they lose a membership level. If set to “Yes (Only old level audiences.)”, users will be unsubscribed from any level audiences they are subscribed to when they lose that level, assuming that audience is not a Non-Member audience as well. If set to “Yes (Old level and opt-in audiences.)”, users will also be unsubscribed from opt-in audiences when they lose their membership level (though they can re-subscribe by updating the setting on their profile).
-* **Update on Profile Save:** If set to “Yes”, PMPro will update Emailchef audiences whenever a user’s profile page is saved. If set to “No”, PMPro will only update Emailchef when a user’s membership level is changed, email is changed, or chosen opt-in audiences are changed.
-* **Log API Calls?:** If set to “Yes”, API calls to Emailchef will be logged in the `/pmpro-emailchef/logs` folder.
-* **Membership Levels and Audiences:** These are the audiences that users will automatically be subscribed to when they receive a membership level.
+* **Non-member Lists:** These are the lists that users will be added to if they do not have a membership level. They will also be removed from these lists when they gain a membership level (assuming the lists are not also set in the “Membership Levels and Lists” option for their new level).
+* **Opt-in Lists:** These are the lists that users will have the option to subscribe to during the PMPro checkout process. Users are later able to update their choice from their profile. Lists set as Opt-in Lists should not also be set as a Non-member Audience nor a Level Audience.
+* **Unsubscribe on Level Change?:** If set to “No”, users will not be automatically unsubscribed from any lists when they lose a membership level. If set to “Yes (Only old level lists.)”, users will be unsubscribed from any level lists they are subscribed to when they lose that level, assuming that audience is not a Non-Member audience as well. If set to “Yes (Old level and opt-in lists.)”, users will also be unsubscribed from opt-in lists when they lose their membership level (though they can re-subscribe by updating the setting on their profile).
+* **Update on Profile Save:** If set to “Yes”, PMPro will update Emailchef lists whenever a user’s profile page is saved. If set to “No”, PMPro will only update Emailchef when a user’s membership level is changed, email is changed, or chosen opt-in lists are changed.
+* **Membership Levels and Lists:** These are the lists that users will automatically be subscribed to when they receive a membership level.
 
 ## Installation
 This plugin works with and without Paid Memberships Pro installed.
@@ -43,7 +42,7 @@ This plugin works with and without Paid Memberships Pro installed.
 
 **Enter your Emailchef email and password:**.
 
-After entering your credentials user, continue with the setup by assigning User or Member Audiences and reviewing the additional settings.
+After entering your credentials user, continue with the setup by assigning User or Member Lists and reviewing the additional settings.
 
 For full documentation on all settings, please visit the [Emailchef Integration Add On documentation page at Paid Memberships Pro]().
 
@@ -57,11 +56,12 @@ Please visit [our support site at https://www.paidmembershipspro.com](http://www
 
 ## Screenshots
 
-1. General Settings for plugin, including the non-member audiences opt-in rules, and unsubscribe rules.
-2. Specific settings for Membership Levels and Audiences.
+1. General Settings for plugin, including the non-member lists opt-in rules, and unsubscribe rules.
+2. Specific settings for Membership Levels and Lists.
 
 ## Changelog
 
+* 1.5.0 general i18n fixes
 * 1.4.0 check PMPRO activation fix
 * 1.3.0 i18n fixes
 * 1.2.0 Small fixes

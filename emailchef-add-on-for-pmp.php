@@ -2,10 +2,10 @@
 /**
  * Plugin Name: Emailchef Add On for Paid Memberships Pro
  * Plugin URI: https://emailchef.com/wordpress-paid-memberships-pro-emailchef-add-on/
- * Description: Sync your WordPress users and members with Emaiclhef audiences.
+ * Description: Sync your WordPress users and members with Emailchef lists.
  * Author: edisplayit
  * Author URI: https://www.emailchef.com
- * Version: 1.4.0
+ * Version: 1.5.0
  * Text Domain: emailchef-add-on-for-pmp
  * Domain Path: /languages/
  * Requires at least: 6.0
@@ -197,8 +197,8 @@ function pmproecaddon_options_page() {
         <img src="<?php echo plugins_url('img/logo.png', __FILE__); ?>" alt="Emailchef">
 
         <h1><?php esc_html_e( 'Emailchef integration options and settings', 'emailchef-add-on-for-pmp' ); ?></h1>
-        <h2><?php esc_html_e( 'Subscribe users to one or more Emailchef audiences when they sign up for your site.', 'emailchef-add-on-for-pmp' ); ?></h2>
-        <label><?php esc_html_e( 'If you have Paid Membership Pro installed, you can subscribe members to one or more Emailchef audiences based on their membership level or specify "Opt-in Audiences" that members can select at membership checkout.', 'emailchef-add-on-for-pmp' ); ?></label>
+        <h2><?php esc_html_e( 'Subscribe users to one or more Emailchef lists when they sign up for your site.', 'emailchef-add-on-for-pmp' ); ?></h2>
+        <label><?php esc_html_e( 'If you have Paid Membership Pro installed, you can subscribe members to one or more Emailchef lists based on their membership level or specify "Opt-in Lists" that members can select at membership checkout.', 'emailchef-add-on-for-pmp' ); ?></label>
 
 		<?php
 		if ( ! empty( $pmproecaddon_msg ) ) {
@@ -243,7 +243,7 @@ function pmproecaddon_options_page() {
                 <table border="0">
                     <tr>
                         <td>
-                            <label for="nonmember_audiences"><?php esc_html_e( 'Nom-member Audiences', 'emailchef-add-on-for-pmp' ); ?></label>
+                            <label for="nonmember_audiences"><?php esc_html_e( 'Non-member Lists', 'emailchef-add-on-for-pmp' ); ?></label>
                         </td>
                         <td>
                             <div class="checkbox-container">
@@ -264,7 +264,7 @@ function pmproecaddon_options_page() {
                     </tr>
                     <tr>
                         <td>
-                            <label for="optin_audiences"><?php esc_html_e( 'Opt-in Audiences', 'emailchef-add-on-for-pmp' ); ?></label>
+                            <label for="optin_audiences"><?php esc_html_e( 'Opt-in Lists', 'emailchef-add-on-for-pmp' ); ?></label>
                         </td>
                         <td>
                             <div class="checkbox-container">
@@ -290,8 +290,8 @@ function pmproecaddon_options_page() {
                         <td>
                             <select class="dropdown" id="unsubscribe_on_level_change"
                                     name="require_unsubscribe_on_level_select">
-                                <option value="yes_only_old_levels" <?php selected( $unsubscribe_on_level, "yes_only_old_levels" ); ?>><?php esc_html_e( 'Yes (Only old level audiences.)', 'emailchef-add-on-for-pmp' ); ?></option>
-                                <option value="yes_old_level" <?php selected( $unsubscribe_on_level, "yes_old_level" ); ?>><?php esc_html_e( 'Yes (Old level and opt-in audiences.)', 'emailchef-add-on-for-pmp' ); ?></option>
+                                <option value="yes_only_old_levels" <?php selected( $unsubscribe_on_level, "yes_only_old_levels" ); ?>><?php esc_html_e( 'Yes (Only old level lists.)', 'emailchef-add-on-for-pmp' ); ?></option>
+                                <option value="yes_old_level" <?php selected( $unsubscribe_on_level, "yes_old_level" ); ?>><?php esc_html_e( 'Yes (Old level and opt-in lists.)', 'emailchef-add-on-for-pmp' ); ?></option>
                                 <option value="no" <?php selected( $unsubscribe_on_level, "no", true ); ?>><?php esc_html_e( 'No', 'emailchef-add-on-for-pmp' ); ?></option>
                             </select>
                         </td>
@@ -299,7 +299,7 @@ function pmproecaddon_options_page() {
                     <tr>
                         <td></td>
                         <td>
-                            <label><?php esc_html_e( 'Recommended: Yes. However, if you manage multiple audiences in Emailchef, unsubscribed from other audiences when they register on your site.', 'emailchef-add-on-for-pmp' ); ?></label>
+                            <label><?php esc_html_e( 'Recommended: Yes. However, if you manage multiple lists in Emailchef, users will be unsubscribed from other lists when they register on your site.', 'emailchef-add-on-for-pmp' ); ?></label>
                         </td>
                     </tr>
                     <tr>
@@ -325,9 +325,9 @@ function pmproecaddon_options_page() {
 				$subscriptions = pmpro_getAllLevels();
 				if ( ! empty( $subscriptions ) ) {
 					?>
-                    <h2><?php esc_html_e( 'Membership Levels and Audiences', 'emailchef-add-on-for-pmp' ); ?></h2>
+                    <h2><?php esc_html_e( 'Membership Levels and Lists', 'emailchef-add-on-for-pmp' ); ?></h2>
                     <p><?php esc_html_e( 'PMPro is installed.', 'emailchef-add-on-for-pmp' ); ?></p>
-                    <p><?php esc_html_e( 'For each level below, choose the audience(s) that a new user should be subscribed to when they register.', 'emailchef-add-on-for-pmp' ); ?></p>
+                    <p><?php esc_html_e( 'For each level below, choose the list(s) that a new user should be subscribed to when they register.', 'emailchef-add-on-for-pmp' ); ?></p>
                     <table border="0">
 						<?php foreach ( $subscriptions as $subscription ) : ?>
                             <tr>
@@ -338,7 +338,7 @@ function pmproecaddon_options_page() {
                     </table>
 					<?php
 				} else {
-					echo '<p>' . esc_html__( 'No PMPro subscriptions found.', 'emailchef-add-on-for-pmp' ) . '</p>';
+					echo '<p>' . esc_html__( 'No available membership levels found in PMPro.', 'emailchef-add-on-for-pmp' ) . '</p>';
 				}
 			}
 			?>
