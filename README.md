@@ -1,24 +1,20 @@
 [![Emailchef](https://github.com/dueclic/emailchef-add-on-for-pmp/blob/main/.wordpress-org/assets/banner-772x250.png?raw=true)
 ](https://www.emailchef.com)
 
-Add users and members to Emailchef lists based on their membership level and allow members to opt-in to specific lists.
+Enhance your membership website's functionality with the Paid Memberships Pro plugin, and seamlessly subscribe WordPress users and members to your Emailchef lists.
 
 ## Description
 
-Subscribe WordPress users and members to your Emailchef lists.
+Once Paid Memberships Pro is installed, you gain the ability to designate distinct lists for different membership levels, along with optional lists that members can join during checkout or through their user profile. By integrating seamlessly, the user’s email and membership level details are automatically merged.
 
-This plugin offers extended functionality for [membership websites using the Paid Memberships Pro plugin](https://wordpress.org/plugins/paid-memberships-pro/) available for free in the WordPress plugin repository.
-
-With Paid Memberships Pro installed, you can specify unique lists for each membership level, as well as opt-in lists that a member can join as part of checkout or by editing their user profile. By default, the integration will merge the user's email address and membership level information.
-
-The settings page allows the site admin to specify which lists to assign users and members to plus additional features  you may wish to adjust. The first step is to connect your website to Emailchef using your email and password.
+On the settings page, site administrators can easily choose specific lists for users and members, in addition to fine-tuning other features to enhance the overall experience.
 
 ## Additional Settings
 
-* **Non-member Lists:** These are the lists that users will be added to if they do not have a membership level. They will also be removed from these lists when they gain a membership level (assuming the lists are not also set in the “Membership Levels and Lists” option for their new level).
-* **Opt-in Lists:** These are the lists that users will have the option to subscribe to during the PMPro checkout process. Users are later able to update their choice from their profile. Lists set as Opt-in Lists should not also be set as a Non-member Audience nor a Level Audience.
-* **Unsubscribe on Level Change?:** If set to “No”, users will not be automatically unsubscribed from any lists when they lose a membership level. If set to “Yes (Only old level lists.)”, users will be unsubscribed from any level lists they are subscribed to when they lose that level, assuming that audience is not a Non-Member audience as well. If set to “Yes (Old level and opt-in lists.)”, users will also be unsubscribed from opt-in lists when they lose their membership level (though they can re-subscribe by updating the setting on their profile).
-* **Update on Profile Save:** If set to “Yes”, PMPro will update Emailchef lists whenever a user’s profile page is saved. If set to “No”, PMPro will only update Emailchef when a user’s membership level is changed, email is changed, or chosen opt-in lists are changed.
+* **Non-member Lists:** These lists are designated for users without a membership level. Once users acquire a membership level, they will be automatically removed from these lists.
+* **Opt-in Lists:** These lists represent the subscription options available to users during the PMPro checkout process. Users can modify their selections later via their profile. It's important to note that lists designated as Opt-in Lists should not be simultaneously categorized as Non-member Lists or Level Lists.
+* **Unsubscribe on Level Change?:** When set to 'No', users will retain their subscriptions to all lists, even if they lose a membership level. Conversely, selecting 'Yes' means users will be automatically unsubscribed from any level-specific lists they belong to upon losing that level, provided those lists are not also classified as Non-Member lists.
+* **Update on Profile Save:** Selecting 'Yes' enables PMPro to refresh Emailchef list information each time a user's profile page is saved. If 'No' is chosen, PMPro will update Emailchef lists only when there's a change in the user's membership level, email, or selected opt-in lists.
 * **Membership Levels and Lists:** These are the lists that users will automatically be subscribed to when they receive a membership level.
 
 ## Installation
