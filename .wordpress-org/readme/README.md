@@ -44,10 +44,6 @@ This plugin works with Paid Memberships Pro installed.
 
 After entering your credentials user, continue with the setup by assigning User or Member Lists and reviewing the additional settings.
 
-For full documentation on all settings, please visit the [Emailchef Integration Add On documentation page at Paid Memberships Pro]().
-
-Several action and filter hooks are available for developers that need to customize specific aspects of the integration. [Please explore the plugin's action and filter hooks here]().
-
 ## Frequently Asked Questions
 
 ### I need help installing, configuring, or customizing the plugin.
