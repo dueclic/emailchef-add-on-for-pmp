@@ -48,7 +48,7 @@ After entering your credentials user, continue with the setup by assigning User 
 
 ### I need help installing, configuring, or customizing the plugin.
 
-Please visit [our dedicated page](https://emailchef.com/it/add-on-emailchef-per-wordpress-paid-memberships-pro/) for more documentation.
+Please visit [our dedicated page](https://emailchef.com/wordpress-paid-memberships-pro-emailchef-add-on/) for more documentation.
 
 ## Screenshots
 
