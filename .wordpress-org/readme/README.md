@@ -3,8 +3,8 @@ Contributors: edisplayit, dueclic
 Donate link: https://www.emailchef.com
 Tags: paid memberships pro, pmpro, emailchef, email marketing
 Requires at least: 6.0
-Tested up to: 6.6
-Stable tag: 1.5.0
+Tested up to: 6.7
+Stable tag: 1.6.0
 Requires PHP: 7.0
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -53,6 +53,7 @@ Please visit [our dedicated page](https://emailchef.com/wordpress-paid-membershi
 
 ## Changelog
 
+* 1.6.0 Extended compatibility to WP 6.7
 * 1.5.0 general i18n fixes
 * 1.4.0 check PMPRO activation fix
 * 1.3.0 i18n fixes

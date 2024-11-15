@@ -5,11 +5,11 @@
  * Description: Sync your WordPress users and members with Emailchef lists.
  * Author: edisplayit
  * Author URI: https://www.emailchef.com
- * Version: 1.5.0
+ * Version: 1.6.0
  * Text Domain: emailchef-add-on-for-pmp
  * Domain Path: /languages/
  * Requires at least: 6.0
- * Tested up to: 6.6
+ * Tested up to: 6.7
  * Requires PHP: 7.0
  * License: GPLv2
  */
