@@ -212,11 +212,11 @@ class Emailchef_Add_On_For_Pmp_Admin {
 	function user_custom_profile_update( $user_id ) {
 		try {
 
-			if ( ! pmpro_hasMembershipLevel( null, $user->ID ) ) {
+			if ( ! pmpro_hasMembershipLevel( null, $user_id ) ) {
 				return;
 			}
 
-			$current_membership = pmpro_getMembershipLevelForUser( $user->ID );
+			$current_membership = pmpro_getMembershipLevelForUser( $user_id);
 
 			if ( ! $current_membership ) {
 				return;
@@ -330,7 +330,6 @@ class Emailchef_Add_On_For_Pmp_Admin {
 					foreach ( $membership_levels as $membership_level ) {
 						foreach ( $lists as $list ) {
 							$checkbox_name = str_replace( " ", "_", $membership_level->name ) . '_' . str_replace( " ", "_", $list['name'] ) . '_checkbox';
-							var_dump( $checkbox_name );
 							if ( isset( $_POST[ $checkbox_name ] ) ) {
 								$list_config[ str_replace( " ", "_", $membership_level->name . "_" . str_replace( " ", "_", $list['name'] ) ) ] = sanitize_text_field( $_POST[ $checkbox_name ] );
 							}
