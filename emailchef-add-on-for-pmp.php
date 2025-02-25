@@ -36,6 +36,10 @@ if ( ! defined( 'WPINC' ) ) {
  * Rename this for your plugin and update it as you release new versions.
  */
 define( 'EMAILCHEF_ADD_ON_FOR_PMP_VERSION', '1.7.0' );
+define( 'EMAILCHEF_ADD_ON_FOR_PMP_PATH', __FILE__ );
+
+require_once plugin_dir_path(__FILE__) . 'includes/class-emailchef-add-on-for-pmp-api-base.php';
+require_once plugin_dir_path(__FILE__) . 'includes/class-emailchef-add-on-for-pmp-api.php';
 
 /**
  * The code that runs during plugin activation.

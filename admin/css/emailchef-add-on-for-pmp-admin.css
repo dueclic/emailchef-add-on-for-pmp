@@ -2,3 +2,288 @@
  * All of the CSS for your admin-specific functionality should be
  * included in this file.
  */
+
+.update-nag{
+    display:none;
+}
+:root{
+    --ecf-error-color: #D73638;
+    --ecf-success-color: #01A32A;
+}
+
+/***/
+.truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.ecf-login-form{
+    display: block;
+    margin-top: 1em;
+    width: 280px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.ecf-login-form-signup{
+    margin-bottom: 2.5em;
+}
+.ecf-login-form label{
+    display: block;
+    margin-bottom: .5em;
+    font-size: 1.2em;
+}
+.ecf-login-form input[ type="text" ],
+.ecf-login-form input[ type="password"]{
+    display: block;
+    width: 100%;
+}
+.ecf-login-form-control-group{
+    margin-bottom: 1.5em;
+}
+.ecf-login-form label.ecf-login-form-get-api{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.ecf-login-form label.ecf-login-form-get-api a{
+    font-size: .8em;
+}
+.ecf-text-center,
+.ecf-text-center p{
+    text-align: center;
+}
+.ecf-login-form-password-field{
+    position: relative;
+}
+.ecf-login-form-password-field input{
+    padding-right: 36px;
+}
+.ecf-login-form-password-field a {
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    height: 32px;
+    width: 36px;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    opacity: .5;
+}
+.ecf-login-form-password-field a:hover {
+    opacity: 1;
+}
+.ecf-login-form-password-field a svg {
+    width: 18px;
+}
+.ecf-login-logo{
+    width: 160px;
+    margin: 10em auto 0;
+}
+
+.ecf-main-container{
+    display: flex;
+    margin-top: 1em ;
+    margin-bottom: 1em ;
+}
+.ecf-main-container > div:first-child{
+    border-right: 1px solid #dddddd;
+    padding-right: 1em;
+}
+.ecf-main-container > div:last-child{
+    padding-left: 1em;
+}
+.ecf-main-account{
+    flex-grow: 0;
+    min-width: 260px;
+}
+.ecf-main-forms{
+    flex-grow: 1;
+}
+.ecf-forms-logo{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+    align-items: start;
+}
+.ecf-forms-logo svg{
+    width: 100px;
+}
+.ecf-account-status{
+    display: flex;
+    align-items: center;
+    gap: .5em;
+    font-size: .9em;
+    margin-bottom: 2rem;
+}
+.ecf-account-connected{
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--ecf-success-color);
+}
+.ecf-account-info {
+    margin-top: .5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: .3rem;
+}
+.ecf-account-disconnect {
+    display: inline-flex;
+    border-radius: 3px;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+}
+.ecf-account-disconnect:hover {
+    background-color: #d5d5d5;
+}
+.ecf-account-disconnect svg {
+    fill: #616161;
+    height: 14px;
+    width: 14px;
+}
+
+
+
+.error-field{
+    color: var(--ecf-error-color);
+    display: block;
+}
+
+.emailchef-form {
+    /*width: 100% !important;*/
+    max-width: 100% !important;
+    margin-right: 1.5em;
+}
+.emailchef-form .map-reload {
+    display: none;
+}
+
+.emailchef-form .form-table td.nopadding {
+    padding: 0;
+    max-width:170px !important;
+}
+.emailchef-form .form-table input[type=text],
+.emailchef-form .form-table input[type=password],
+.emailchef-form .form-table textarea,
+.emailchef-form .form-table select
+{
+    background-color: #fff;
+    width: 200px;
+}
+.emailchef-form select {
+    max-width:100% !important;
+}
+
+.emailchef-form .save {
+    margin: 0 0 0 10px !important;
+}
+
+.emailchef-check-login-result {
+    margin-top: 1em;
+    display: none;
+}
+
+input[name="emailchef_settings\[consumer_key\]"].error,
+input[name="emailchef_settings\[consumer_secret\]"].error {
+    border-color: var(--ecf-error-color);
+}
+
+input[name="emailchef_settings\[consumer_key\]"].valid,
+input[name="emailchef_settings\[consumer_secret\]"].valid {
+    border-color: var(--ecf-success-color);
+}
+
+.js .emailchef-form .control-section.open .accordion-section-title{
+    color: #FFF;
+    background: #F47200;
+    /*font-weight: bold;*/
+}
+.js .emailchef-form  .control-section.open .accordion-section-title .not-connected,
+.js .emailchef-form  .control-section.open .accordion-section-title .connected{
+    color: #FFF;
+}
+.control-section.open .accordion-section-title:after{
+    color: #FFF;
+}
+
+.accordion-section .not-connected {
+    display: inline-block;
+    float: right;
+    margin-right: 20px;
+    color: var(--ecf-error-color);
+}
+.accordion-section.active .not-connected {
+    display: none;
+}
+.accordion-section .connected {
+    display: none;
+    float: right;
+    margin-right: 20px;
+    color: var(--ecf-success-color);
+}
+.accordion-section.active .connected {
+    display: inline-block;
+}
+.accordion-section .loading{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+}
+.accordion-section-content{
+    border-left: 1px solid #dddddd;
+    border-right: 1px solid #dddddd;
+    background-color: #f8f8f8;
+}
+.accordion-section .form-table-container{
+    border:1px solid #ccc;
+    padding:.5em;
+    margin-top:.5em;
+    margin-bottom: 1em;
+}
+.accordion-section.warning .form-table-container,
+.accordion-section.warning .list-id{
+    border-color:var(--ecf-error-color);
+}
+.accordion-section .warning-select-list{
+    display:none;
+    color:var(--ecf-error-color);
+}
+.accordion-section.warning .warning-select-list{
+    display:block;
+}
+.accordion-section.warning-map .form-table-container{
+    border-color:var(--ecf-error-color);
+}
+.accordion-section.warning-map .at-least-email{
+    color:var(--ecf-error-color);
+}
+.accordion-section .form-table td,
+.accordion-section .form-table th{
+    border-bottom: 1px solid #ddd;
+}
+.accordion-section .form-table th{
+    font-size: 1.1em;
+}
+.accordion-section .form-table tr:last-child td,
+.accordion-section .form-table tr:last-child th{
+    border: none;
+}
+.accordion-section .form-table th {
+    padding: .5em;
+}
+.accordion-section .form-table td {
+    padding: .5em;
+}
+.auto-create{
+    text-align: center;
+    padding-bottom: 1em;
+}
+

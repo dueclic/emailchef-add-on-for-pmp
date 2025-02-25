@@ -155,7 +155,11 @@ class Emailchef_Add_On_For_Pmp {
 		$plugin_admin = new Emailchef_Add_On_For_Pmp_Admin( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
+		$this->loader->add_action('admin_menu', $plugin_admin, 'options_menu_page');
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+		$this->loader->add_action( 'admin_init', $plugin_admin, 'page_options_settings' ) ;
+		$this->loader->add_action( 'wp_ajax_emailchef-add-on-for-pmp_check_login', $plugin_admin, 'page_options_ajax_check_login'  );
+		$this->loader->add_action( 'wp_ajax_emailchef-add-on-for-pmp_disconnect', $plugin_admin, 'page_options_ajax_disconnect' );
 
 	}
 
