@@ -7,7 +7,44 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Emailchef_Add_On_For_Pmp_Api extends Emailchef_Add_On_For_Pmp_Api_Base {
 
 	public function lists( $args = array() ) {
-		return $this->json( "/lists", $args, "GET" );
+
+
+		if (empty($args)) {
+			$args = array(
+				'hidden'    => 0,
+				'limit'     => 100,
+				'offset'    => 0,
+				'orderby'   => 'cd',
+				'ordertype' => 'd',
+				'pinned' => 1
+			);
+		}
+
+
+		if (false === ($lists = get_transient('pmproecaddon_lists'))){
+			$lists = $this->json( "/lists", $args, "GET" );
+			set_transient('pmproecaddon_lists', $lists, 60 * 30);
+		}
+
+		return $lists;
+	}
+
+	public function add_contact(
+		$list_id,
+		$email,
+		$first_name,
+		$last_name = ""
+	){
+		return $this->json( "/contacts", json_encode([
+			"instance_in" => [
+				"list_id"   => $list_id,
+				"status"    => "ACTIVE",
+				"email"     => $email,
+				"firstname" => $first_name,
+				"lastname"  => $last_name,
+				"mode"      => "ADMIN"
+			]
+		]), "POST" );
 	}
 
 	private function json( $route, $args, $method = "POST" ) {

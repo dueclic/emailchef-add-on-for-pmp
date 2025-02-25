@@ -173,6 +173,15 @@ class Emailchef_Add_On_For_Pmp {
 
 		if ( 'yes' === $plugin_enabled ) {
 			$this->loader->add_action( 'admin_post_pmproecaddon_save_data', $plugin_admin, 'save_options' );
+			$this->loader->add_action( 'show_user_profile', $plugin_admin, 'user_custom_profile_fields', 12 );
+			$this->loader->add_action( 'edit_user_profile', $plugin_admin, 'user_custom_profile_fields', 12 );
+			$this->loader->add_action( 'pmpro_show_user_profile',$plugin_admin,  'user_custom_profile_fields', 12 );
+			$this->loader->add_action( 'personal_options_update', $plugin_admin, 'user_custom_profile_update' );
+			$this->loader->add_action( 'edit_user_profile_update',  $plugin_admin, 'user_custom_profile_update' );
+			$this->loader->add_action( 'pmpro_personal_options_update',  $plugin_admin, 'user_custom_profile_update' );
+			$this->loader->add_action( 'pmpro_after_checkout', $plugin_admin,'pmpro_checkout_emailchef_sync' );
+			$this->loader->add_action( 'pmpro_checkout_after_tos_fields', $plugin_admin,'pmpro_additional_lists_on_checkout' );
+
 		}
 
 	}

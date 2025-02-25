@@ -287,7 +287,7 @@ input[name="emailchef_settings\[consumer_secret\]"].valid {
     padding-bottom: 1em;
 }
 
-.pmproecaddon-options .checkbox-container {
+.pmproecaddon-checkbox-container {
     width: 300px;
     max-height: 100px;
     border: 1px solid #ccc;
@@ -295,7 +295,7 @@ input[name="emailchef_settings\[consumer_secret\]"].valid {
     background-color: white;
 }
 
-.pmproecaddon-options .checkbox-item {
+.pmproecaddon-checkbox-container .checkbox-item {
     display: block;
     margin: 5px 0;
 }

@@ -13,13 +13,7 @@
  */
 
 $account = $api->account();
-$lists   = $api->lists( array(
-	'hidden'    => '0',
-	'limit'     => '999',
-	'offset'    => '0',
-	'orderby'   => 'cd',
-	'ordertype' => 'd',
-) );
+$lists   = $api->lists(  );
 
 $list_opt_in_audiences  = get_option( 'pmproecaddon_plugin_list_opt_in_audiences', '' );
 $list_non_member        = get_option( 'pmproecaddon_plugin_list_non_member', '' );

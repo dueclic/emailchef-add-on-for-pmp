@@ -146,8 +146,8 @@ class Emailchef_Add_On_For_Pmp_Admin {
 
 		}
 
-		update_option('pmproecaddon_consumer_key', $consumer_key);
-		update_option('pmproecaddon_consumer_secret', $consumer_secret);
+		update_option( 'pmproecaddon_consumer_key', $consumer_key );
+		update_option( 'pmproecaddon_consumer_secret', $consumer_secret );
 		update_option( 'pmproecaddon_plugin_user_enabled', 'yes' );
 		wp_send_json_success( [] );
 	}
@@ -174,6 +174,145 @@ class Emailchef_Add_On_For_Pmp_Admin {
 
 	}
 
+
+	/*
+		Add opt-in Lists to the user profile/edit user page.
+	*/
+	function user_custom_profile_fields( $user ) {
+
+		if ( ! pmpro_hasMembershipLevel( null, $user->ID ) ) {
+			return;
+		}
+
+		$current_membership = pmpro_getMembershipLevelForUser( $user->ID );
+
+		if ( ! $current_membership ) {
+			return;
+		}
+
+		$list_opt_in_audiences = get_option( 'pmproecaddon_plugin_list_opt_in_audiences', '' );
+
+		if ( count( $list_opt_in_audiences ) > 0 ) {
+			$lists = $this->api->lists();
+			?>
+            <h4><?php esc_html_e( 'Join our mailing list.', 'emailchef-add-on-for-pmp' ); ?></h4>
+
+			<?php
+
+			pmproecaddon_list_match_display(
+				$lists,
+				"opt_in_audiences",
+				$list_opt_in_audiences
+			);
+
+		}
+
+	}
+
+	function user_custom_profile_update( $user_id ) {
+		try {
+
+			if ( ! pmpro_hasMembershipLevel( null, $user->ID ) ) {
+				return;
+			}
+
+			$current_membership = pmpro_getMembershipLevelForUser( $user->ID );
+
+			if ( ! $current_membership ) {
+				return;
+			}
+
+
+			$user_email = get_userdata( $user_id )->user_email;
+
+			$lists = $this->api->lists();
+
+			$pmproecaddon_require_update_profile = get_option( 'pmproecaddon_require_update_profile', '' );
+
+			if ( isset( $pmproecaddon_require_update_profile ) && $pmproecaddon_require_update_profile == "yes" ) {
+
+				foreach ( $lists as $list ) {
+					$name_checkbox = "opt_in_audiences_" . esc_html( str_replace( " ", "_", $list['name'] ) ) . "_checkbox";
+					if ( isset( $_REQUEST[ $name_checkbox ] ) ) {
+						$list_id = $list['id'];
+
+						$first_name = sanitize_text_field( $_REQUEST["first_name"] );
+						$last_name  = sanitize_text_field( $_REQUEST["last_name"] );
+
+						$this->api->add_contact( $list_id, $user_email, $first_name, $last_name );
+
+					}
+				}
+			}
+
+		} catch ( Exception $e ) {
+			echo $e->getMessage();
+		}
+	}
+
+	/**
+	 * Update Emailchef audiences when users checkout after usermeta is saved.
+	 *
+	 * @param int $user_id of user who checked out.
+	 */
+	function pmpro_checkout_emailchef_sync( $user_id ) {
+		try {
+
+			if ( ! pmpro_hasMembershipLevel( null, $user_id ) ) {
+				return;
+			}
+
+			$current_membership = pmpro_getMembershipLevelForUser( $user_id );
+
+			if ( ! $current_membership ) {
+				return;
+			}
+
+
+			$level_name  = str_replace( " ", "_", $current_membership->name );
+			$list_config = get_option( 'pmproecaddon_plugin_list_config', '' );
+
+			$user = get_userdata( $user_id );
+
+			$user_email = $user->user_email;
+			$first_name = $user->first_name;
+			$last_name  = $user->last_name;
+
+			$lists = $this->api->lists();
+
+			foreach ( $lists as $list ) {
+
+				if ( isset( $list_config[ $level_name . "_" . str_replace( " ", "_", $list['name'] ) ] ) ) {
+					$list_id = $list_config[ $level_name . "_" . str_replace( " ", "_", $list['name'] ) ];
+					$this->api->add_contact( $list_id, $user_email, $first_name, $last_name );
+				}
+			}
+
+		} catch ( Exception $e ) {
+		}
+	}
+
+	function pmpro_additional_lists_on_checkout() {
+		try {
+			$list_opt_in_audiences = get_option( 'pmproecaddon_plugin_list_opt_in_audiences', '' );
+
+			if ( count( $list_opt_in_audiences ) > 0 ) {
+				$lists = $this->api->lists();
+				?>
+                <h3><?php esc_html_e( 'Join our mailing list.', 'emailchef-add-on-for-pmp' ); ?></h3>
+				<?php
+				pmproecaddon_list_match_display(
+					$lists,
+					"opt_in_audiences",
+					$list_opt_in_audiences
+				);
+			}
+		} catch ( Exception $e ) {
+
+		}
+	}
+
+
 	function save_options() {
 
 		if ( wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['pmproecaddon-nonce'] ) ), 'pmproecaddon-nonce' )
@@ -183,9 +322,7 @@ class Emailchef_Add_On_For_Pmp_Admin {
 			$list_config           = array();
 			$list_opt_in_audiences = array();
 			$list_nom_member       = array();
-			$lists             = $this->api->lists();
-
-			var_dump($_POST);
+			$lists                 = $this->api->lists();
 
 			if ( $lists != null ) {
 				$membership_levels = pmpro_getAllLevels();
@@ -193,7 +330,7 @@ class Emailchef_Add_On_For_Pmp_Admin {
 					foreach ( $membership_levels as $membership_level ) {
 						foreach ( $lists as $list ) {
 							$checkbox_name = str_replace( " ", "_", $membership_level->name ) . '_' . str_replace( " ", "_", $list['name'] ) . '_checkbox';
-							var_dump($checkbox_name);
+							var_dump( $checkbox_name );
 							if ( isset( $_POST[ $checkbox_name ] ) ) {
 								$list_config[ str_replace( " ", "_", $membership_level->name . "_" . str_replace( " ", "_", $list['name'] ) ) ] = sanitize_text_field( $_POST[ $checkbox_name ] );
 							}
@@ -237,7 +374,8 @@ class Emailchef_Add_On_For_Pmp_Admin {
 	}
 
 
-	public function page_options_ajax_disconnect(){
+	public
+	function page_options_ajax_disconnect() {
 
 		if ( ! wp_verify_nonce( sanitize_text_field( $_POST['_pmproecaddon_nonce'] ), 'pmproecaddon_disconnect' ) ) {
 			wp_send_json_error( [
@@ -260,7 +398,8 @@ class Emailchef_Add_On_For_Pmp_Admin {
 	 *
 	 * @since    1.0.0
 	 */
-	public function enqueue_scripts() {
+	public
+	function enqueue_scripts() {
 
 		/**
 		 * This function is provided for demonstration purposes only.

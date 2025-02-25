@@ -9,7 +9,7 @@ function pmproecaddon_list_match_display(
 	$subscription_name = str_replace( " ", "_", $subscription_name );
 
 	?>
-    <div class="checkbox-container">
+    <div class="pmproecaddon-checkbox-container">
 		<?php foreach ( $lists as $list ) :
 			$list_name = str_replace( " ", "_", $list['name'] );
 			$name_checkbox = $subscription_name . '_' . $list_name;
