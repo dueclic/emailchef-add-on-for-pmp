@@ -41,15 +41,22 @@ class Emailchef_Add_On_For_Pmp_Admin {
 	private $version;
 
 	/**
+	 * @var Emailchef_Add_On_For_Pmp_Api
+	 */
+	private $api;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
+	 * @param Emailchef_Add_On_For_Pmp_Api $api New instance for Emailchef_Add_On_For_Pmp_Api class
 	 * @param string $plugin_name The name of this plugin.
 	 * @param string $version The version of this plugin.
 	 *
 	 * @since    1.0.0
 	 */
-	public function __construct( $plugin_name, $version ) {
+	public function __construct( $api, $plugin_name, $version ) {
 
+		$this->api         = $api;
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
 
@@ -99,7 +106,7 @@ class Emailchef_Add_On_For_Pmp_Admin {
 		);
 
 		add_settings_field(
-			'consumer_key',
+			'pmproecaddon_consumer_key',
 			__( 'Consumer Key', 'emailchef-add-on-for-pmp' ),
 			'sanitize_text_field',
 			'pmproecaddon_options',
@@ -107,7 +114,7 @@ class Emailchef_Add_On_For_Pmp_Admin {
 		);
 
 		add_settings_field(
-			'consumer_secret',
+			'pmproecaddon_consumer_secret',
 			__( 'Consumer Secret', 'emailchef-add-on-for-pmp' ),
 			'sanitize_text_field',
 			'pmproecaddon_options',
@@ -126,23 +133,31 @@ class Emailchef_Add_On_For_Pmp_Admin {
 		$consumer_key    = sanitize_text_field( $_POST['consumer_key'] );
 		$consumer_secret = sanitize_text_field( $_POST['consumer_secret'] );
 
-		$emailchefApi = new Emailchef_Add_On_For_Pmp_Api(
+		$account = $this->api->set(
 			$consumer_key,
 			$consumer_secret
-		);
-
-		$account = $emailchefApi->account();
+		)->account();
 
 		if ( ! $account || ( isset( $account['status'] ) && $account['status'] === 'error' ) ) {
-
 			update_option( 'pmproecaddon_plugin_user_enabled', 'no' );
 			wp_send_json_error( [
 				'message' => __( 'Login attempt unsuccessful. Ensure your API keys are entered correctly.', 'emailchef-add-on-for-pmp' )
 			] );
 
 		}
+
+		update_option('pmproecaddon_consumer_key', $consumer_key);
+		update_option('pmproecaddon_consumer_secret', $consumer_secret);
 		update_option( 'pmproecaddon_plugin_user_enabled', 'yes' );
 		wp_send_json_success( [] );
+	}
+
+	public function action_links_menu( $links ) {
+		$new_links = array(
+			'<a href="' . esc_url( admin_url( 'options-general.php?page=pmproecaddon_options' ) ) . '">' . esc_html__( 'Settings', 'emailchef-add-on-for-pmp' ) . '</a>',
+		);
+
+		return array_merge( $new_links, $links );
 	}
 
 	public function options_menu_page_callback() {
@@ -152,10 +167,7 @@ class Emailchef_Add_On_For_Pmp_Admin {
 		if ( 'yes' !== $plugin_enabled ) {
 			include_once plugin_dir_path( EMAILCHEF_ADD_ON_FOR_PMP_PATH ) . 'admin/partials/logged-out.php';
 		} else {
-
-			$settings     = get_option( 'pmproecaddon_settings' );
-			$emailchefApi = new Emailchef_Add_On_For_Pmp_Api( $settings['consumer_key'], $settings['consumer_secret'] );
-			$account      = $emailchefApi->account();
+			$api = $this->api;
 
 			include_once plugin_dir_path( EMAILCHEF_ADD_ON_FOR_PMP_PATH ) . 'admin/partials/options.php';
 		}

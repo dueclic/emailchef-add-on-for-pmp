@@ -287,3 +287,31 @@ input[name="emailchef_settings\[consumer_secret\]"].valid {
     padding-bottom: 1em;
 }
 
+.pmproecaddon-options .checkbox-container {
+    width: 300px;
+    max-height: 100px;
+    border: 1px solid #ccc;
+    overflow-y: auto;
+    background-color: white;
+}
+
+.pmproecaddon-options .checkbox-item {
+    display: block;
+    margin: 5px 0;
+}
+
+.pmproecaddon-options .input-text {
+    width:300px;
+    margin-left: 25px;
+}
+.pmproecaddon-options .input-checkbox {
+    margin-left: 5px;
+}
+
+.pmproecaddon-options .dropdown {
+    width:200px;
+}
+
+.pmproecaddon-mt-20 {
+    margin-top: 20px;
+}

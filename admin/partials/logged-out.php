@@ -42,7 +42,7 @@
             </label>
 
             <input class="ecf-input" type="text" value="" id="consumer_key"
-                   name="pmproecaddon_settings[consumer_key]">
+                   name="pmproecaddon_consumer_key">
 
         </div>
 
@@ -67,7 +67,7 @@
             <label for="consumer_secret"><?php _e('Consumer Secret', 'emailchef-add-on-for-pmp'); ?>:</label>
 
             <input class="ecf-input" type="password" id="consumer_secret"
-                   value="" name="pmproecaddon_settings[consumer_secret]">
+                   value="" name="pmproecaddon_consumer_secret">
 
         </div>
 

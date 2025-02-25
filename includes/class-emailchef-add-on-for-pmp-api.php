@@ -6,6 +6,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Emailchef_Add_On_For_Pmp_Api extends Emailchef_Add_On_For_Pmp_Api_Base {
 
+	public function lists( $args = array() ) {
+		return $this->json( "/lists", $args, "GET" );
+	}
+
 	private function json( $route, $args, $method = "POST" ) {
 
 		$response = $this->call(

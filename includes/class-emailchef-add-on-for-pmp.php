@@ -152,7 +152,14 @@ class Emailchef_Add_On_For_Pmp {
 	 */
 	private function define_admin_hooks() {
 
-		$plugin_admin = new Emailchef_Add_On_For_Pmp_Admin( $this->get_plugin_name(), $this->get_version() );
+		$plugin_admin = new Emailchef_Add_On_For_Pmp_Admin(
+			new Emailchef_Add_On_For_Pmp_Api(
+				get_option('pmproecaddon_consumer_key', ''),
+				get_option('pmproecaddon_consumer_secret', '')
+			),
+			$this->get_plugin_name(),
+			$this->get_version()
+		);
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action('admin_menu', $plugin_admin, 'options_menu_page');
@@ -160,7 +167,7 @@ class Emailchef_Add_On_For_Pmp {
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'page_options_settings' ) ;
 		$this->loader->add_action( 'wp_ajax_emailchef-add-on-for-pmp_check_login', $plugin_admin, 'page_options_ajax_check_login'  );
 		$this->loader->add_action( 'wp_ajax_emailchef-add-on-for-pmp_disconnect', $plugin_admin, 'page_options_ajax_disconnect' );
-
+		$this->loader->add_filter( 'plugin_action_links_' . plugin_basename( EMAILCHEF_ADD_ON_FOR_PMP_PATH ), $plugin_admin,'action_links_menu' );
 	}
 
 	/**

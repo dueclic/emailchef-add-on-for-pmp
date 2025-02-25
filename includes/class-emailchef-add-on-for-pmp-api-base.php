@@ -19,9 +19,18 @@ class Emailchef_Add_On_For_Pmp_Api_Base {
 	 */
 	private $consumer_secret = null;
 
-	public function __construct( $consumer_key, $consumer_secret ) {
+	public function set(
+		$consumer_key,
+		$consumer_secret
+	): Emailchef_Add_On_For_Pmp_Api_Base {
 		$this->consumer_key = $consumer_key;
 		$this->consumer_secret = $consumer_secret;
+		return $this;
+	}
+
+
+	public function __construct( $consumer_key, $consumer_secret ) {
+		$this->set($consumer_key, $consumer_secret);
 	}
 
 	public function getApiUrl(){

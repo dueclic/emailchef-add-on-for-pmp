@@ -12,7 +12,19 @@
  * @subpackage Emailchef_Add_On_For_Pmp/admin/partials
  */
 
+$account = $api->account();
+$lists   = $api->lists( array(
+	'hidden'    => '0',
+	'limit'     => '999',
+	'offset'    => '0',
+	'orderby'   => 'cd',
+	'ordertype' => 'd',
+) );
 
+$list_opt_in_audiences  = get_option( 'pmproecaddon_plugin_list_opt_in_audiences', '' );
+$list_nom_member        = get_option( 'pmproecaddon_plugin_list_non_member', '' );
+$unsubscribe_on_level   = get_option( 'pmproecaddon_require_unsuscribe_on_level', '' );
+$require_update_profile = get_option( 'pmproecaddon_require_update_profile', '' );
 
 $pmproecaddon_msg = sanitize_text_field( wp_unslash( $_GET['pmproecaddon_msg'] ) );
 
@@ -32,7 +44,8 @@ $pmproecaddon_msg = sanitize_text_field( wp_unslash( $_GET['pmproecaddon_msg'] )
                 <span class="flex-grow-1 truncate"
                       title="<?php echo $account['email']; ?>"><strong><?php echo $account['email']; ?></strong></span>
                 <span>
-                <a id="emailchef-disconnect" data-nonce="<?php echo wp_create_nonce('pmproecaddon_disconnect'); ?>" class="ecf-account-disconnect"
+                <a id="emailchef-disconnect" data-nonce="<?php echo wp_create_nonce( 'pmproecaddon_disconnect' ); ?>"
+                   class="ecf-account-disconnect"
                    title="<?php _e( "Disconnect account", "emailchef" ); ?>">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path
                                 d="M280 24c0-13.3-10.7-24-24-24s-24 10.7-24 24l0 240c0 13.3 10.7 24 24 24s24-10.7 24-24l0-240zM134.2 107.3c10.7-7.9 12.9-22.9 5.1-33.6s-22.9-12.9-33.6-5.1C46.5 112.3 8 182.7 8 262C8 394.6 115.5 502 248 502s240-107.5 240-240c0-79.3-38.5-149.7-97.8-193.3c-10.7-7.9-25.7-5.6-33.6 5.1s-5.6 25.7 5.1 33.6c47.5 35 78.2 91.2 78.2 154.7c0 106-86 192-192 192S56 368 56 262c0-63.4 30.7-119.7 78.2-154.7z"></path></svg>
@@ -42,8 +55,6 @@ $pmproecaddon_msg = sanitize_text_field( wp_unslash( $_GET['pmproecaddon_msg'] )
         </div>
         <div class="ecf-main-forms">
             <div class="wrap pmproecaddon-options">
-
-                <img src="<?php echo plugins_url( 'img/logo.png', __FILE__ ); ?>" alt="Emailchef">
 
                 <h1><?php esc_html_e( 'Emailchef integration options and settings', 'emailchef-add-on-for-pmp' ); ?></h1>
                 <h2><?php esc_html_e( 'Subscribe users to one or more Emailchef lists when they sign up for your site.', 'emailchef-add-on-for-pmp' ); ?></h2>
@@ -64,135 +75,114 @@ $pmproecaddon_msg = sanitize_text_field( wp_unslash( $_GET['pmproecaddon_msg'] )
 				?>
 
                 <form method="post" action="<?php echo esc_url( admin_url( "admin-post.php" ) ); ?>">
+                    <h2><?php esc_html_e( 'General configuration', 'emailchef-add-on-for-pmp' ); ?></h2>
+                    <table border="0">
+                        <tr>
+                            <td>
+                                <label for="nonmember_audiences"><?php esc_html_e( 'Non-member Lists', 'emailchef-add-on-for-pmp' ); ?></label>
+                            </td>
+                            <td>
+                                <div class="checkbox-container">
+									<?php foreach ( $lists as $list ) :
+										$list_name = str_replace( " ", "_", $list['name'] );
+										$name_checkbox = "nom_member_audiences_" . $list_name . "_checkbox";
+										$is_checked = isset( $list_nom_member[ $name_checkbox ] ) && $list_nom_member[ $name_checkbox ] == $list['id'];
+										?>
+                                        <label class="checkbox-item">
+                                            <input id="nonmember_audiences" class="input-checkbox" type="checkbox"
+                                                   name="<?php echo esc_attr( $name_checkbox ); ?>"
+                                                   value="<?php echo esc_attr( $list['id'] ); ?>" <?php echo $is_checked ? 'checked' : ''; ?>>
+											<?php echo esc_html( $list['name'] ); ?>
+                                        </label>
+									<?php endforeach; ?>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="optin_audiences"><?php esc_html_e( 'Opt-in Lists', 'emailchef-add-on-for-pmp' ); ?></label>
+                            </td>
+                            <td>
+                                <div class="checkbox-container">
+									<?php foreach ( $lists as $list ) :
+										$list_name = str_replace( " ", "_", $list['name'] );
+										$name_checkbox = "opt_in_audiences_" . $list_name . "_checkbox";
+										$is_checked = isset( $list_opt_in_audiences[ $name_checkbox ] ) && $list_opt_in_audiences[ $name_checkbox ] == $list['id'];
+										?>
+                                        <label class="checkbox-item">
+                                            <input id="optin_audiences" class="input-checkbox" type="checkbox"
+                                                   name="<?php echo esc_attr( $name_checkbox ); ?>"
+                                                   value="<?php echo esc_attr( $list['id'] ); ?>" <?php echo $is_checked ? 'checked' : ''; ?>>
+											<?php echo esc_html( $list['name'] ); ?>
+                                        </label>
+									<?php endforeach; ?>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="unsubscribe_on_level_change"><?php esc_html_e( 'Unsubscribe on Level Change?', 'emailchef-add-on-for-pmp' ); ?></label>
+                            </td>
+                            <td>
+                                <select class="dropdown" id="unsubscribe_on_level_change"
+                                        name="require_unsubscribe_on_level_select">
+                                    <option value="yes_only_old_levels" <?php selected( $unsubscribe_on_level, "yes_only_old_levels" ); ?>><?php esc_html_e( 'Yes (Only old level lists.)', 'emailchef-add-on-for-pmp' ); ?></option>
+                                    <option value="yes_old_level" <?php selected( $unsubscribe_on_level, "yes_old_level" ); ?>><?php esc_html_e( 'Yes (Old level and opt-in lists.)', 'emailchef-add-on-for-pmp' ); ?></option>
+                                    <option value="no" <?php selected( $unsubscribe_on_level, "no", true ); ?>><?php esc_html_e( 'No', 'emailchef-add-on-for-pmp' ); ?></option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <label><?php esc_html_e( 'Recommended: Yes. However, if you manage multiple lists in Emailchef, users will be unsubscribed from other lists when they register on your site.', 'emailchef-add-on-for-pmp' ); ?></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="update_profile_save"><?php esc_html_e( 'Update on Profile Save?', 'emailchef-add-on-for-pmp' ); ?></label>
+                            </td>
+                            <td>
+                                <select class="dropdown" id="update_profile_save"
+                                        name="require_update_profile_select">
+                                    <option value="yes" <?php selected( $require_update_profile, "yes" ); ?>><?php esc_html_e( 'Yes', 'emailchef-add-on-for-pmp' ); ?></option>
+                                    <option value="no" <?php selected( $require_update_profile, "no", true ); ?>><?php esc_html_e( 'No', 'emailchef-add-on-for-pmp' ); ?></option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <label><?php esc_html_e( "Choosing 'No' will still update Emailchef when the user's level is changed.", 'emailchef-add-on-for-pmp' ); ?></label>
+                            </td>
+                        </tr>
+                    </table>
+
 					<?php
-					/*if ( 'yes' === get_option( 'pmproecaddon_plugin_user_enabled', 'no' ) ) {
-						pmproecaddon_load_list_ec();
-						$list_data              = get_option( 'pmproecaddon_list_data', '' );
-						$list_opt_in_audiences  = get_option( 'pmproecaddon_plugin_list_opt_in_audiences', '' );
-						$list_nom_member        = get_option( 'pmproecaddon_plugin_list_nom_member', '' );
-						$unsubscribe_on_level   = get_option( 'pmproecaddon_require_unsuscribe_on_level', '' );
-						$require_update_profile = get_option( 'pmproecaddon_require_update_profile', '' );
-
+					$subscriptions = pmpro_getAllLevels();
+					if ( ! empty( $subscriptions ) ) {
 						?>
-                        <h2><?php esc_html_e( 'General configuration', 'emailchef-add-on-for-pmp' ); ?></h2>
+                        <h2><?php esc_html_e( 'Membership Levels and Lists', 'emailchef-add-on-for-pmp' ); ?></h2>
+                        <p><?php esc_html_e( 'PMPro is installed.', 'emailchef-add-on-for-pmp' ); ?></p>
+                        <p><?php esc_html_e( 'For each level below, choose the list(s) that a new user should be subscribed to when they register.', 'emailchef-add-on-for-pmp' ); ?></p>
                         <table border="0">
-                            <tr>
-                                <td>
-                                    <label for="nonmember_audiences"><?php esc_html_e( 'Non-member Lists', 'emailchef-add-on-for-pmp' ); ?></label>
-                                </td>
-                                <td>
-                                    <div class="checkbox-container">
-										<?php foreach ( $list_data as $list ) :
-											$list_name = str_replace( " ", "_", $list['name'] );
-											$name_checkbox = "nom_member_audiences_" . $list_name . "_checkbox";
-											$is_checked = isset( $list_nom_member[ $name_checkbox ] ) && $list_nom_member[ $name_checkbox ] == $list['id'];
-											?>
-                                            <label class="checkbox-item">
-                                                <input id="nonmember_audiences" class="input-checkbox" type="checkbox"
-                                                       name="<?php echo esc_attr( $name_checkbox ); ?>"
-                                                       value="<?php echo esc_attr( $list['id'] ); ?>" <?php echo $is_checked ? 'checked' : ''; ?>>
-												<?php echo esc_html( $list['name'] ); ?>
-                                            </label>
-										<?php endforeach; ?>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label for="optin_audiences"><?php esc_html_e( 'Opt-in Lists', 'emailchef-add-on-for-pmp' ); ?></label>
-                                </td>
-                                <td>
-                                    <div class="checkbox-container">
-										<?php foreach ( $list_data as $list ) :
-											$list_name = str_replace( " ", "_", $list['name'] );
-											$name_checkbox = "opt_in_audiences_" . $list_name . "_checkbox";
-											$is_checked = isset( $list_opt_in_audiences[ $name_checkbox ] ) && $list_opt_in_audiences[ $name_checkbox ] == $list['id'];
-											?>
-                                            <label class="checkbox-item">
-                                                <input id="optin_audiences" class="input-checkbox" type="checkbox"
-                                                       name="<?php echo esc_attr( $name_checkbox ); ?>"
-                                                       value="<?php echo esc_attr( $list['id'] ); ?>" <?php echo $is_checked ? 'checked' : ''; ?>>
-												<?php echo esc_html( $list['name'] ); ?>
-                                            </label>
-										<?php endforeach; ?>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label for="unsubscribe_on_level_change"><?php esc_html_e( 'Unsubscribe on Level Change?', 'emailchef-add-on-for-pmp' ); ?></label>
-                                </td>
-                                <td>
-                                    <select class="dropdown" id="unsubscribe_on_level_change"
-                                            name="require_unsubscribe_on_level_select">
-                                        <option value="yes_only_old_levels" <?php selected( $unsubscribe_on_level, "yes_only_old_levels" ); ?>><?php esc_html_e( 'Yes (Only old level lists.)', 'emailchef-add-on-for-pmp' ); ?></option>
-                                        <option value="yes_old_level" <?php selected( $unsubscribe_on_level, "yes_old_level" ); ?>><?php esc_html_e( 'Yes (Old level and opt-in lists.)', 'emailchef-add-on-for-pmp' ); ?></option>
-                                        <option value="no" <?php selected( $unsubscribe_on_level, "no", true ); ?>><?php esc_html_e( 'No', 'emailchef-add-on-for-pmp' ); ?></option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td>
-                                    <label><?php esc_html_e( 'Recommended: Yes. However, if you manage multiple lists in Emailchef, users will be unsubscribed from other lists when they register on your site.', 'emailchef-add-on-for-pmp' ); ?></label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label for="update_profile_save"><?php esc_html_e( 'Update on Profile Save?', 'emailchef-add-on-for-pmp' ); ?></label>
-                                </td>
-                                <td>
-                                    <select class="dropdown" id="update_profile_save"
-                                            name="require_update_profile_select">
-                                        <option value="yes" <?php selected( $require_update_profile, "yes" ); ?>><?php esc_html_e( 'Yes', 'emailchef-add-on-for-pmp' ); ?></option>
-                                        <option value="no" <?php selected( $require_update_profile, "no", true ); ?>><?php esc_html_e( 'No', 'emailchef-add-on-for-pmp' ); ?></option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td>
-                                    <label><?php esc_html_e( "Choosing 'No' will still update Emailchef when the user's level is changed.", 'emailchef-add-on-for-pmp' ); ?></label>
-                                </td>
-                            </tr>
+							<?php foreach ( $subscriptions as $subscription ) : ?>
+                                <tr>
+                                    <td><label><?php echo esc_html( $subscription->name ); ?></label></td>
+									<?php pmproecaddon_list_ec_plugin_display( $lists, str_replace( " ", "_", $subscription->name ) ); ?>
+                                </tr>
+							<?php endforeach; ?>
                         </table>
-
 						<?php
-						$subscriptions = pmpro_getAllLevels();
-						if ( ! empty( $subscriptions ) ) {
-							?>
-                            <h2><?php esc_html_e( 'Membership Levels and Lists', 'emailchef-add-on-for-pmp' ); ?></h2>
-                            <p><?php esc_html_e( 'PMPro is installed.', 'emailchef-add-on-for-pmp' ); ?></p>
-                            <p><?php esc_html_e( 'For each level below, choose the list(s) that a new user should be subscribed to when they register.', 'emailchef-add-on-for-pmp' ); ?></p>
-                            <table border="0">
-								<?php foreach ( $subscriptions as $subscription ) : ?>
-                                    <tr>
-                                        <td><label><?php echo esc_html( $subscription->name ); ?></label></td>
-										<?php pmproecaddon_list_ec_plugin_display( str_replace( " ", "_", $subscription->name ) ); ?>
-                                    </tr>
-								<?php endforeach; ?>
-                            </table>
-							<?php
-						} else {
-							echo '<p>' . esc_html__( 'No available membership levels found in PMPro.', 'emailchef-add-on-for-pmp' ) . '</p>';
-						}
-					}*/
+					} else {
+						echo '<p>' . esc_html__( 'No available membership levels found in PMPro.', 'emailchef-add-on-for-pmp' ) . '</p>';
+					}
 					?>
                     <br>
 					<?php wp_nonce_field( 'pmproecaddon-nonce', 'pmproecaddon-nonce' ); ?>
                     <input type="hidden" name="action" value="pmproecaddon_save_data">
                     <input type="submit" name="plugin_save" class="button button-primary"
                            value="<?php esc_attr_e( 'Save settings', 'emailchef-add-on-for-pmp' ); ?>">
-                </form>
-
-
-                <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>"
-                      class="pmproecaddon-mt-20">
-                    <input type="hidden" name="action" value="pmproecaddon_reset_options">
-					<?php wp_nonce_field( 'pmproecaddon-reset-nonce', 'pmproecaddon-reset-nonce' ); ?>
-                    <input type="submit" name="plugin_reset" class="button button-secondary"
-                           value="<?php esc_attr_e( 'Reset settings', 'emailchef-add-on-for-pmp' ); ?>"
-                           onclick="return confirm('<?php esc_attr_e( 'Are you sure you want to reset all the settings?', 'emailchef-add-on-for-pmp' ); ?>');">
                 </form>
             </div>
         </div>

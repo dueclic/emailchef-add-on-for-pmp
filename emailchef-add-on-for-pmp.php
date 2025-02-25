@@ -40,6 +40,7 @@ define( 'EMAILCHEF_ADD_ON_FOR_PMP_PATH', __FILE__ );
 
 require_once plugin_dir_path(__FILE__) . 'includes/class-emailchef-add-on-for-pmp-api-base.php';
 require_once plugin_dir_path(__FILE__) . 'includes/class-emailchef-add-on-for-pmp-api.php';
+require_once plugin_dir_path( __FILE__ ) . 'common-api.php';
 
 /**
  * The code that runs during plugin activation.
