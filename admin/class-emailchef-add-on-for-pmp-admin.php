@@ -174,6 +174,69 @@ class Emailchef_Add_On_For_Pmp_Admin {
 
 	}
 
+	function save_options() {
+
+		if ( wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['pmproecaddon-nonce'] ) ), 'pmproecaddon-nonce' )
+		     && isset( $_POST['plugin_save'] )
+		) {
+
+			$list_config           = array();
+			$list_opt_in_audiences = array();
+			$list_nom_member       = array();
+			$lists             = $this->api->lists();
+
+			var_dump($_POST);
+
+			if ( $lists != null ) {
+				$membership_levels = pmpro_getAllLevels();
+				if ( ! empty( $membership_levels ) ) {
+					foreach ( $membership_levels as $membership_level ) {
+						foreach ( $lists as $list ) {
+							$checkbox_name = str_replace( " ", "_", $membership_level->name ) . '_' . str_replace( " ", "_", $list['name'] ) . '_checkbox';
+							var_dump($checkbox_name);
+							if ( isset( $_POST[ $checkbox_name ] ) ) {
+								$list_config[ str_replace( " ", "_", $membership_level->name . "_" . str_replace( " ", "_", $list['name'] ) ) ] = sanitize_text_field( $_POST[ $checkbox_name ] );
+							}
+						}
+					}
+					update_option( 'pmproecaddon_plugin_list_config', $list_config );
+
+					foreach ( $lists as $list ) {
+						$checkbox_name = 'opt_in_audiences_' . str_replace( " ", "_", $list['name'] ) . '_checkbox';
+						if ( isset( $_POST[ $checkbox_name ] ) ) {
+							$list_nom_member[ "opt_in_audiences_" . str_replace( " ", "_", $list['name'] ) ] = sanitize_text_field( $_POST[ $checkbox_name ] );
+						}
+					}
+					update_option( 'pmproecaddon_plugin_list_opt_in_audiences', $list_nom_member );
+
+					foreach ( $lists as $list ) {
+						$checkbox_name = 'non_member_audiences_' . str_replace( " ", "_", $list['name'] ) . '_checkbox';
+						if ( isset( $_POST[ $checkbox_name ] ) ) {
+							$list_opt_in_audiences[ "non_member_audiences_" . str_replace( " ", "_", $list['name'] ) ] = sanitize_text_field( $_POST[ $checkbox_name ] );
+						}
+					}
+					update_option( 'pmproecaddon_plugin_list_non_member', $list_opt_in_audiences );
+
+					if ( isset( $_POST['require_unsubscribe_on_level_select'] ) ) {
+						$require_unsubscribe_on_leve_select = sanitize_text_field( $_POST['require_unsubscribe_on_level_select'] );
+						update_option( 'pmproecaddon_require_unsuscribe_on_level', $require_unsubscribe_on_leve_select );
+					}
+
+					if ( isset( $_POST['require_update_profile_select'] ) ) {
+						$require_update_profile_select = sanitize_text_field( $_POST['require_update_profile_select'] );
+						update_option( 'pmproecaddon_require_update_profile', $require_update_profile_select );
+					}
+				} else {
+					wp_safe_redirect( add_query_arg( 'pmproecaddon_msg', 'no_membership_levels', wp_get_referer() ) );
+					exit;
+				}
+			}
+			wp_safe_redirect( add_query_arg( 'pmproecaddon_msg', 'success', wp_get_referer() ) );
+			exit;
+		}
+	}
+
+
 	public function page_options_ajax_disconnect(){
 
 		if ( ! wp_verify_nonce( sanitize_text_field( $_POST['_pmproecaddon_nonce'] ), 'pmproecaddon_disconnect' ) ) {

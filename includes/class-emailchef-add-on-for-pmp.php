@@ -168,6 +168,13 @@ class Emailchef_Add_On_For_Pmp {
 		$this->loader->add_action( 'wp_ajax_emailchef-add-on-for-pmp_check_login', $plugin_admin, 'page_options_ajax_check_login'  );
 		$this->loader->add_action( 'wp_ajax_emailchef-add-on-for-pmp_disconnect', $plugin_admin, 'page_options_ajax_disconnect' );
 		$this->loader->add_filter( 'plugin_action_links_' . plugin_basename( EMAILCHEF_ADD_ON_FOR_PMP_PATH ), $plugin_admin,'action_links_menu' );
+
+		$plugin_enabled = get_option( "pmproecaddon_plugin_user_enabled", "no" );
+
+		if ( 'yes' === $plugin_enabled ) {
+			$this->loader->add_action( 'admin_post_pmproecaddon_save_data', $plugin_admin, 'save_options' );
+		}
+
 	}
 
 	/**
@@ -184,7 +191,6 @@ class Emailchef_Add_On_For_Pmp {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 		$this->loader->add_action( 'pmproecaddon_api_response', $plugin_public, 'handle_api_response' , 5 );
-
 
 	}
 
