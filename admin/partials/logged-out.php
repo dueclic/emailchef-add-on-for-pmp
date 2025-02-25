@@ -21,9 +21,8 @@
 	<?php
 
     wp_nonce_field('emailchef-add-on-for-pmp_check_login', '_pmproecaddon_nonce');
+	settings_fields('pmproecaddon_settings_group');
 
-	$options = get_option('pmproecaddon_settings');
-	settings_fields('pluginPage');
 	?>
 
     <p class="ecf-text-center ecf-login-form-signup">
@@ -42,7 +41,7 @@
                    class="ecf-get-api"><?php _e('Get API Key', 'emailchef-add-on-for-pmp'); ?></a>
             </label>
 
-            <input class="ecf-input" type="text" value="<?php echo $options['consumer_key']; ?>" id="consumer_key"
+            <input class="ecf-input" type="text" value="" id="consumer_key"
                    name="pmproecaddon_settings[consumer_key]">
 
         </div>
@@ -68,7 +67,7 @@
             <label for="consumer_secret"><?php _e('Consumer Secret', 'emailchef-add-on-for-pmp'); ?>:</label>
 
             <input class="ecf-input" type="password" id="consumer_secret"
-                   value="<?php echo $options['consumer_secret']; ?>" name="pmproecaddon_settings[consumer_secret]">
+                   value="" name="pmproecaddon_settings[consumer_secret]">
 
         </div>
 

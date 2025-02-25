@@ -23,7 +23,7 @@ class Emailchef_Add_On_For_Pmp_Api extends Emailchef_Add_On_For_Pmp_Api_Base {
 		] );
 
 		if ( $status_code !== 200 ) {
-			return apply_filters( "pmproecaddon__response_body_error",
+			return apply_filters( "pmproecaddon_response_body_error",
 				[
 					"status"      => "error",
 					"sub_status"  => "api_error",

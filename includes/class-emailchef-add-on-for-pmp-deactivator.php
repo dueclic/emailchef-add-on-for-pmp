@@ -30,7 +30,8 @@ class Emailchef_Add_On_For_Pmp_Deactivator {
 	 * @since    1.0.0
 	 */
 	public static function deactivate() {
-
+		delete_option( 'pmproecaddon_plugin_user_enabled' );
+		delete_option( 'pmproecaddon_settings' );
 	}
 
 }

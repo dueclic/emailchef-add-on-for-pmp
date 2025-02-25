@@ -30,7 +30,6 @@ class Emailchef_Add_On_For_Pmp_Activator {
 	 * @since    1.0.0
 	 */
 	public static function activate() {
-
 	}
 
 }

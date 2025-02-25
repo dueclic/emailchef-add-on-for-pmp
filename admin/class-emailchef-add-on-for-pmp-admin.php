@@ -89,7 +89,7 @@ class Emailchef_Add_On_For_Pmp_Admin {
 	}
 
 	public function page_options_settings() {
-		register_setting( 'pluginPage', 'pmproecaddon_settings' );
+		register_setting( 'pmproecaddon_settings_group', 'pmproecaddon_settings' );
 
 		add_settings_section(
 			'pmproecaddon_pluginPage_section',
@@ -99,18 +99,18 @@ class Emailchef_Add_On_For_Pmp_Admin {
 		);
 
 		add_settings_field(
-			'pmproecaddon_consumer_key',
+			'consumer_key',
 			__( 'Consumer Key', 'emailchef-add-on-for-pmp' ),
 			'sanitize_text_field',
-			'pluginPage',
+			'pmproecaddon_options',
 			'pmproecaddon_pluginPage_section'
 		);
 
 		add_settings_field(
-			'pmproecaddon_consumer_secret',
+			'consumer_secret',
 			__( 'Consumer Secret', 'emailchef-add-on-for-pmp' ),
 			'sanitize_text_field',
-			'pluginPage',
+			'pmproecaddon_options',
 			'pmproecaddon_pluginPage_section'
 		);
 	}
@@ -133,7 +133,7 @@ class Emailchef_Add_On_For_Pmp_Admin {
 
 		$account = $emailchefApi->account();
 
-		if ( !$account || (isset( $account['status'] ) && $account['status'] === 'error') ) {
+		if ( ! $account || ( isset( $account['status'] ) && $account['status'] === 'error' ) ) {
 
 			update_option( 'pmproecaddon_plugin_user_enabled', 'no' );
 			wp_send_json_error( [
@@ -147,13 +147,36 @@ class Emailchef_Add_On_For_Pmp_Admin {
 
 	public function options_menu_page_callback() {
 
-		$plugin_enabled = get_option("pmproecaddon_plugin_user_enabled", "no");
+		$plugin_enabled = get_option( "pmproecaddon_plugin_user_enabled", "no" );
 
 		if ( 'yes' !== $plugin_enabled ) {
 			include_once plugin_dir_path( EMAILCHEF_ADD_ON_FOR_PMP_PATH ) . 'admin/partials/logged-out.php';
 		} else {
+
+			$settings     = get_option( 'pmproecaddon_settings' );
+			$emailchefApi = new Emailchef_Add_On_For_Pmp_Api( $settings['consumer_key'], $settings['consumer_secret'] );
+			$account      = $emailchefApi->account();
+
 			include_once plugin_dir_path( EMAILCHEF_ADD_ON_FOR_PMP_PATH ) . 'admin/partials/options.php';
 		}
+
+	}
+
+	public function page_options_ajax_disconnect(){
+
+		if ( ! wp_verify_nonce( sanitize_text_field( $_POST['_pmproecaddon_nonce'] ), 'pmproecaddon_disconnect' ) ) {
+			wp_send_json_error( [
+				'message' => __( 'Invalid request', 'emailchef-add-on-for-pmp' )
+			] );
+		}
+
+
+		deactivate_emailchef_add_on_for_pmp();
+
+		wp_send_json_success( [
+			'message' => __( 'Emailchef account successfully disconnected', 'emailchef-add-on-for-pmp' )
+		] );
+
 
 	}
 

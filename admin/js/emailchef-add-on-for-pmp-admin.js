@@ -1,111 +1,97 @@
-(function( $ ) {
-	'use strict';
+(function ($) {
+    'use strict';
 
-	/**
-	 * All of the code for your admin-facing JavaScript source
-	 * should reside in this file.
-	 *
-	 * Note: It has been assumed you will write jQuery code here, so the
-	 * $ function reference has been prepared for usage within the scope
-	 * of this function.
-	 *
-	 * This enables you to define handlers, for when the DOM is ready:
-	 *
-	 * $(function() {
-	 *
-	 * });
-	 *
-	 * When the window is loaded:
-	 *
-	 * $( window ).load(function() {
-	 *
-	 * });
-	 *
-	 * ...and/or other possibilities.
-	 *
-	 * Ideally, it is not considered best practise to attach more than a
-	 * single DOM-ready or window-load handler for a particular page.
-	 * Although scripts in the WordPress core, Plugins and Themes may be
-	 * practising this, we should strive to set a better example in our own work.
-	 */
+    /**
+     * All of the code for your admin-facing JavaScript source
+     * should reside in this file.
+     *
+     * Note: It has been assumed you will write jQuery code here, so the
+     * $ function reference has been prepared for usage within the scope
+     * of this function.
+     *
+     * This enables you to define handlers, for when the DOM is ready:
+     *
+     * $(function() {
+     *
+     * });
+     *
+     * When the window is loaded:
+     *
+     * $( window ).load(function() {
+     *
+     * });
+     *
+     * ...and/or other possibilities.
+     *
+     * Ideally, it is not considered best practise to attach more than a
+     * single DOM-ready or window-load handler for a particular page.
+     * Although scripts in the WordPress core, Plugins and Themes may be
+     * practising this, we should strive to set a better example in our own work.
+     */
 
-	window.eMailChef = {
-		checkLogin: function (email, password, nonce, callback) {
-			var data = {
-				'action': 'emailchef-add-on-for-pmp_check_login',
-				'consumer_key': email,
-				'consumer_secret': password,
-				'_pmproecaddon_nonce': nonce
-			};
+    $(document).ready(function () {
 
-			jQuery.post(ajaxurl, data, function (response) {
-				callback(response);
-			});
-		}
-	};
+        var form = $("#ecf-login-form");
+        var formSubmit = $("#ecf-login-submit");
+        var showPassword = $("#showPassword");
+        var hidePassword = $("#hidePassword");
 
-	$(document).ready(function () {
+        $(showPassword).on("click", function () {
+            $('input[name="emailchef_settings\[consumer_secret\]"]').attr("type", "text");
+            $(showPassword).hide();
+            $(hidePassword).show();
+        });
 
-		var form = $("#ecf-login-form");
-		var formSubmit = $("#ecf-login-submit");
-		var showPassword = $("#showPassword");
-		var hidePassword = $("#hidePassword");
+        $(hidePassword).on("click", function () {
+            $('input[name="emailchef_settings\[consumer_secret\]"]').attr("type", "password");
+            $(hidePassword).hide();
+            $(showPassword).show();
+        });
 
-		$(showPassword).on("click", function(){
-			$('input[name="emailchef_settings\[consumer_secret\]"]').attr("type", "text");
-			$(showPassword).hide();
-			$(hidePassword).show();
-		});
+        $(formSubmit).on("click", function () {
+            $('.emailchef-check-login-result').removeClass('notice-error notice-success').hide();
+            $('#ecf-login-submit').prop('disabled', true);
 
-		$(hidePassword).on("click", function(){
-			$('input[name="emailchef_settings\[consumer_secret\]"]').attr("type", "password");
-			$(hidePassword).hide();
-			$(showPassword).show();
-		});
+            jQuery.post(ajaxurl, {
+                'action': 'emailchef-add-on-for-pmp_check_login',
+                'consumer_key': $('input[name="pmproecaddon_settings\[consumer_key\]"]').val(),
+                'consumer_secret': $('input[name="pmproecaddon_settings\[consumer_secret\]"]').val(),
+                '_pmproecaddon_nonce': $('input[name="_pmproecaddon_nonce"]').val()
+            }, function (res) {
+                if (res && res.success) {
+                    $('.emailchef-check-login-result').addClass('notice-success').html('<p>' + emailchefPMPI18n.login_correct + '</p>').show();
+                    $('input[name="pmproecaddon_settings\[consumer_key\]"],input[name="pmproecaddon_settings\[consumer_secret\]"]').addClass('valid');
+                    $(form).trigger('submit');
+                } else {
+                    $('.emailchef-check-login-result').addClass('notice-error').html('<p>' + emailchefPMPI18n.login_failed + '</p>').show();
+                    $('input[name="pmproecaddon_settings\[consumer_key\]"],input[name="pmproecaddon_settings\[consumer_secret\]"]').addClass('error');
+                    $('#ecf-login-submit').prop('disabled', false);
+                }
+            });
 
-		$(formSubmit).on("click", function () {
-			$('.emailchef-check-login-result').removeClass('notice-error notice-success').hide();
-			$('#ecf-login-submit').prop('disabled', true);
-			eMailChef.checkLogin(
-				$('input[name="pmproecaddon_settings\[consumer_key\]"]').val(),
-				$('input[name="pmproecaddon_settings\[consumer_secret\]"]').val(),
-				$('input[name="_pmproecaddon_nonce"]').val(),
-				function (res) {
+        });
 
-					if (res && res.success) {
-						$('.emailchef-check-login-result').addClass('notice-success').html('<p>'+emailchefPMPI18n.login_correct+'</p>').show();;
-						$('input[name="pmproecaddon_settings\[consumer_key\]"],input[name="pmproecaddon_settings\[consumer_secret\]"]').addClass('valid');
-						$(form).trigger('submit');
-					} else {
-						$('.emailchef-check-login-result').addClass('notice-error').html('<p>'+emailchefPMPI18n.login_failed+'</p>').show();;
-						$('input[name="pmproecaddon_settings\[consumer_key\]"],input[name="pmproecaddon_settings\[consumer_secret\]"]').addClass('error');
-						$('#ecf-login-submit').prop('disabled', false);
-					}
+        $("#emailchef-disconnect").on("click", function () {
 
-				}
-			);
-		});
+            if (confirm(emailchefPMPI18n.disconnect_account_confirm)) {
 
-		/*$("#emailchef-disconnect").on("click", function(){
+                var data = {
+                    'action': 'emailchef-add-on-for-pmp_disconnect',
+                    '_pmproecaddon_nonce': $("#emailchef-disconnect").data("nonce")
+                };
 
-			if (confirm(emailchefPMPI18n.disconnect_account_confirm)) {
+                jQuery.post(ajaxurl, data, function (response) {
+                    if (response.success) {
+                        window.reload();
+                    }
+                });
 
-				var data = {
-					'action': 'emailchef_disconnect'
-				};
+            }
 
-				jQuery.post(ajaxurl, data, function (response) {
-					if (response.result) {
-						window.location.href = urlToSettingsPage;
-					}
-				});
-
-			}
-
-		});*/
+        });
 
 
-	});
+    });
 
 
-})( jQuery );
+})(jQuery);

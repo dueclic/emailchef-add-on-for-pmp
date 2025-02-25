@@ -55,6 +55,25 @@ class Emailchef_Add_On_For_Pmp_Public {
 	}
 
 	/**
+	 * @param array | WP_Error $response
+	 *
+	 * @void
+	 */
+
+
+	public function handle_api_response(
+		$response
+	){
+		$status_code = wp_remote_retrieve_response_code( $response );
+		if ( $status_code === 401 ) {
+			update_option( 'pmproecaddon_plugin_user_enabled', "no" );
+		}
+
+		do_action( "pmproecaddon_api_post_response", $response, $status_code );
+
+	}
+
+	/**
 	 * Register the stylesheets for the public-facing side of the site.
 	 *
 	 * @since    1.0.0
