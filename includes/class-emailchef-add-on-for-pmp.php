@@ -35,7 +35,7 @@ class Emailchef_Add_On_For_Pmp {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      Emailchef_Add_On_For_Pmp_Loader    $loader    Maintains and registers all hooks for the plugin.
+	 * @var      Emailchef_Add_On_For_Pmp_Loader $loader Maintains and registers all hooks for the plugin.
 	 */
 	protected $loader;
 
@@ -44,7 +44,7 @@ class Emailchef_Add_On_For_Pmp {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      string    $plugin_name    The string used to uniquely identify this plugin.
+	 * @var      string $plugin_name The string used to uniquely identify this plugin.
 	 */
 	protected $plugin_name;
 
@@ -53,7 +53,7 @@ class Emailchef_Add_On_For_Pmp {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      string    $version    The current version of the plugin.
+	 * @var      string $version The current version of the plugin.
 	 */
 	protected $version;
 
@@ -154,20 +154,20 @@ class Emailchef_Add_On_For_Pmp {
 
 		$plugin_admin = new Emailchef_Add_On_For_Pmp_Admin(
 			new Emailchef_Add_On_For_Pmp_Api(
-				get_option('pmproecaddon_consumer_key', ''),
-				get_option('pmproecaddon_consumer_secret', '')
+				get_option( 'pmproecaddon_consumer_key', '' ),
+				get_option( 'pmproecaddon_consumer_secret', '' )
 			),
 			$this->get_plugin_name(),
 			$this->get_version()
 		);
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
-		$this->loader->add_action('admin_menu', $plugin_admin, 'options_menu_page');
+		$this->loader->add_action( 'admin_menu', $plugin_admin, 'options_menu_page' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-		$this->loader->add_action( 'admin_init', $plugin_admin, 'page_options_settings' ) ;
-		$this->loader->add_action( 'wp_ajax_emailchef-add-on-for-pmp_check_login', $plugin_admin, 'page_options_ajax_check_login'  );
+		$this->loader->add_action( 'admin_init', $plugin_admin, 'page_options_settings' );
+		$this->loader->add_action( 'wp_ajax_emailchef-add-on-for-pmp_check_login', $plugin_admin, 'page_options_ajax_check_login' );
 		$this->loader->add_action( 'wp_ajax_emailchef-add-on-for-pmp_disconnect', $plugin_admin, 'page_options_ajax_disconnect' );
-		$this->loader->add_filter( 'plugin_action_links_' . plugin_basename( EMAILCHEF_ADD_ON_FOR_PMP_PATH ), $plugin_admin,'action_links_menu' );
+		$this->loader->add_filter( 'plugin_action_links_' . plugin_basename( EMAILCHEF_ADD_ON_FOR_PMP_PATH ), $plugin_admin, 'action_links_menu' );
 
 		$plugin_enabled = get_option( "pmproecaddon_plugin_user_enabled", "no" );
 
@@ -175,13 +175,12 @@ class Emailchef_Add_On_For_Pmp {
 			$this->loader->add_action( 'admin_post_pmproecaddon_save_data', $plugin_admin, 'save_options' );
 			$this->loader->add_action( 'show_user_profile', $plugin_admin, 'user_custom_profile_fields', 12 );
 			$this->loader->add_action( 'edit_user_profile', $plugin_admin, 'user_custom_profile_fields', 12 );
-			$this->loader->add_action( 'pmpro_show_user_profile',$plugin_admin,  'user_custom_profile_fields', 12 );
+			$this->loader->add_action( 'pmpro_show_user_profile', $plugin_admin, 'user_custom_profile_fields', 12 );
 			$this->loader->add_action( 'personal_options_update', $plugin_admin, 'user_custom_profile_update' );
-			$this->loader->add_action( 'edit_user_profile_update',  $plugin_admin, 'user_custom_profile_update' );
-			$this->loader->add_action( 'pmpro_personal_options_update',  $plugin_admin, 'user_custom_profile_update' );
-			$this->loader->add_action( 'pmpro_after_checkout', $plugin_admin,'pmpro_checkout_emailchef_sync' );
-			$this->loader->add_action( 'pmpro_checkout_after_tos_fields', $plugin_admin,'pmpro_additional_lists_on_checkout' );
-
+			$this->loader->add_action( 'edit_user_profile_update', $plugin_admin, 'user_custom_profile_update' );
+			$this->loader->add_action( 'pmpro_personal_options_update', $plugin_admin, 'user_custom_profile_update' );
+			$this->loader->add_action( 'pmpro_after_checkout', $plugin_admin, 'pmpro_checkout_emailchef_sync' );
+			$this->loader->add_action( 'pmpro_checkout_after_tos_fields', $plugin_admin, 'pmpro_additional_lists_on_checkout' );
 		}
 
 	}
@@ -195,11 +194,28 @@ class Emailchef_Add_On_For_Pmp {
 	 */
 	private function define_public_hooks() {
 
-		$plugin_public = new Emailchef_Add_On_For_Pmp_Public( $this->get_plugin_name(), $this->get_version() );
+		$plugin_public = new Emailchef_Add_On_For_Pmp_Public(
+			new Emailchef_Add_On_For_Pmp_Api(
+				get_option( 'pmproecaddon_consumer_key', '' ),
+				get_option( 'pmproecaddon_consumer_secret', '' )
+			),
+			$this->get_plugin_name(),
+			$this->get_version()
+		);
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-		$this->loader->add_action( 'pmproecaddon_api_response', $plugin_public, 'handle_api_response' , 5 );
+		$this->loader->add_action( 'pmproecaddon_api_response', $plugin_public, 'handle_api_response', 5 );
+
+		$plugin_enabled = get_option( "pmproecaddon_plugin_user_enabled", "no" );
+
+		if ( 'yes' === $plugin_enabled ) {
+			$this->loader->add_action( 'pmpro_after_checkout', $plugin_public, 'pmpro_checkout_emailchef_sync' );
+			$this->loader->add_action( 'pmpro_checkout_after_tos_fields', $plugin_public, 'pmpro_additional_lists_on_checkout' );
+			// $this->loader->add_action( 'pmpro_after_change_membership_level', $plugin_public, 'pmpro_after_change_membership_level', 15, 2 );
+			$this->loader->add_action( 'pmpro_after_checkout', $plugin_public, 'pmpro_after_checkout', 15 );
+			$this->loader->add_action( 'user_register', $plugin_public, 'user_register' );
+		}
 
 	}
 
@@ -216,8 +232,8 @@ class Emailchef_Add_On_For_Pmp {
 	 * The name of the plugin used to uniquely identify it within the context of
 	 * WordPress and to define internationalization functionality.
 	 *
-	 * @since     1.0.0
 	 * @return    string    The name of the plugin.
+	 * @since     1.0.0
 	 */
 	public function get_plugin_name() {
 		return $this->plugin_name;
@@ -226,8 +242,8 @@ class Emailchef_Add_On_For_Pmp {
 	/**
 	 * The reference to the class that orchestrates the hooks with the plugin.
 	 *
-	 * @since     1.0.0
 	 * @return    Emailchef_Add_On_For_Pmp_Loader    Orchestrates the hooks of the plugin.
+	 * @since     1.0.0
 	 */
 	public function get_loader() {
 		return $this->loader;
@@ -236,8 +252,8 @@ class Emailchef_Add_On_For_Pmp {
 	/**
 	 * Retrieve the version number of the plugin.
 	 *
-	 * @since     1.0.0
 	 * @return    string    The version number of the plugin.
+	 * @since     1.0.0
 	 */
 	public function get_version() {
 		return $this->version;

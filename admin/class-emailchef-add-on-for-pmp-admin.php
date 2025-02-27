@@ -250,69 +250,6 @@ class Emailchef_Add_On_For_Pmp_Admin {
 		}
 	}
 
-	/**
-	 * Update Emailchef audiences when users checkout after usermeta is saved.
-	 *
-	 * @param int $user_id of user who checked out.
-	 */
-	function pmpro_checkout_emailchef_sync( $user_id ) {
-		try {
-
-			if ( ! pmpro_hasMembershipLevel( null, $user_id ) ) {
-				return;
-			}
-
-			$current_membership = pmpro_getMembershipLevelForUser( $user_id );
-
-			if ( ! $current_membership ) {
-				return;
-			}
-
-
-			$level_name  = str_replace( " ", "_", $current_membership->name );
-			$list_config = get_option( 'pmproecaddon_plugin_list_config', '' );
-
-			$user = get_userdata( $user_id );
-
-			$user_email = $user->user_email;
-			$first_name = $user->first_name;
-			$last_name  = $user->last_name;
-
-			$lists = $this->api->lists();
-
-			foreach ( $lists as $list ) {
-
-				if ( isset( $list_config[ $level_name . "_" . str_replace( " ", "_", $list['name'] ) ] ) ) {
-					$list_id = $list_config[ $level_name . "_" . str_replace( " ", "_", $list['name'] ) ];
-					$this->api->add_contact( $list_id, $user_email, $first_name, $last_name );
-				}
-			}
-
-		} catch ( Exception $e ) {
-		}
-	}
-
-	function pmpro_additional_lists_on_checkout() {
-		try {
-			$list_opt_in_audiences = get_option( 'pmproecaddon_plugin_list_opt_in_audiences', '' );
-
-			if ( count( $list_opt_in_audiences ) > 0 ) {
-				$lists = $this->api->lists();
-				?>
-                <h3><?php esc_html_e( 'Join our mailing list.', 'emailchef-add-on-for-pmp' ); ?></h3>
-				<?php
-				pmproecaddon_list_match_display(
-					$lists,
-					"opt_in_audiences",
-					$list_opt_in_audiences
-				);
-			}
-		} catch ( Exception $e ) {
-
-		}
-	}
-
-
 	function save_options() {
 
 		if ( wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['pmproecaddon-nonce'] ) ), 'pmproecaddon-nonce' )

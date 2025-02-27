@@ -53,6 +53,7 @@ Please visit [our dedicated page](https://emailchef.com/wordpress-paid-membershi
 
 ## Changelog
 
+* 1.7.0 Use Emailchef API Keys
 * 1.6.0 Extended compatibility to WP 6.7
 * 1.5.0 general i18n fixes
 * 1.4.0 check PMPRO activation fix
