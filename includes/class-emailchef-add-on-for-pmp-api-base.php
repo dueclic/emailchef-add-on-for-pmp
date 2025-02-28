@@ -44,6 +44,7 @@ class Emailchef_Add_On_For_Pmp_Api_Base {
 		$args = array(
 			'body'   => $args,
 			'method' => strtoupper( $method ),
+			'user-agent' => 'Emailchef Addon for PMPRO (WordPress Plugin)',
 			'headers' => [
 				'consumerKey' => $this->consumer_key,
 				'consumerSecret' => $this->consumer_secret
