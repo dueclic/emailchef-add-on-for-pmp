@@ -21,12 +21,7 @@ class Emailchef_Add_On_For_Pmp_Api extends Emailchef_Add_On_For_Pmp_Api_Base {
 		}
 
 
-		if (false === ($lists = get_transient('pmproecaddon_lists'))){
-			$lists = $this->json( "/lists", $args, "GET" );
-			set_transient('pmproecaddon_lists', $lists, 60 * 30);
-		}
-
-		return $lists;
+		return $this->json( "/lists", $args, "GET" );
 	}
 
 	public function add_contact(
