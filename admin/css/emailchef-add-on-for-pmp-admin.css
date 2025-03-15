@@ -10,6 +10,12 @@
     --ecf-error-color: #D73638;
     --ecf-success-color: #01A32A;
 }
+.ecf-success{
+    color: var(--ecf-success-color);
+}
+.ecf-error{
+    color: var(--ecf-error-color);
+}
 
 /***/
 .truncate {
@@ -93,10 +99,11 @@
 }
 .ecf-main-container > div:last-child{
     padding-left: 1em;
+    flex-grow: 1;
 }
 .ecf-main-account{
     flex-grow: 0;
-    min-width: 260px;
+    flex-basis: 260px;
 }
 .ecf-main-forms{
     flex-grow: 1;
@@ -176,6 +183,9 @@
 {
     background-color: #fff;
     width: 200px;
+}
+.emailchef-form .form-table label{
+    font-weight: 600;
 }
 .emailchef-form select {
     max-width:100% !important;
@@ -288,18 +298,16 @@ input[name="emailchef_settings\[consumer_secret\]"].valid {
 }
 
 .pmproecaddon-checkbox-container {
-    width: 300px;
-    max-height: 100px;
+    max-width: 500px;
+    max-height: 150px;
     border: 1px solid #ccc;
     overflow-y: auto;
     background-color: white;
 }
-
 .pmproecaddon-checkbox-container .checkbox-item {
     display: block;
-    margin: 5px 0;
+    margin: 0;
 }
-
 .pmproecaddon-options .input-text {
     width:300px;
     margin-left: 25px;
@@ -388,27 +396,31 @@ input[name="emailchef_settings\[consumer_secret\]"].valid {
 }
 
 .ecf-main-content {
+    /*
     background: #fff;
     padding: 2rem;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    */
 }
 
 .checkbox-container {
     max-height: 150px;
     border: 1px solid #ddd;
     border-radius: 4px;
-    padding: 0.5rem;
+    padding: 0.2rem 0.5rem;
     background: #fff;
 }
 
 .checkbox-item {
     display: flex;
     align-items: center;
-    padding: 0.5rem;
+    padding: 0.35rem 0.5rem;
     transition: background-color 0.2s;
 }
-
+.emailchef-form .form-table label.checkbox-item{
+    font-weight: 400;
+}
 .checkbox-item:hover {
     background-color: #f0f0f1;
 }
