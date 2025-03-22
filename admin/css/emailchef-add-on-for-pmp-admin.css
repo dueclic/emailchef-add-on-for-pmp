@@ -102,8 +102,10 @@
     flex-grow: 1;
 }
 .ecf-main-account{
-    flex-grow: 0;
     flex-basis: 260px;
+    width: 260px;
+    flex-grow: 0;
+    flex-shrink: 0;
 }
 .ecf-main-forms{
     flex-grow: 1;
