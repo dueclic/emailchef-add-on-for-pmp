@@ -310,8 +310,7 @@ class Emailchef_Add_On_For_Pmp_Admin {
 	}
 
 
-	public
-	function page_options_ajax_disconnect() {
+	public function page_options_ajax_disconnect() {
 
 		if ( ! wp_verify_nonce( sanitize_text_field( $_POST['_pmproecaddon_nonce'] ), 'pmproecaddon_disconnect' ) ) {
 			wp_send_json_error( [

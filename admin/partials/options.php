@@ -21,7 +21,7 @@ $unsubscribe_on_level   = get_option( 'pmproecaddon_require_unsuscribe_on_level'
 $require_update_profile = get_option( 'pmproecaddon_require_update_profile', '' );
 
 
-$pmproecaddon_msg = sanitize_text_field( wp_unslash( $_GET['pmproecaddon_msg'] ) );
+$pmproecaddon_msg = isset($_GET['pmproecaddon_msg']) ? sanitize_text_field( wp_unslash( $_GET['pmproecaddon_msg'] ) ) : '';
 
 ?>
 

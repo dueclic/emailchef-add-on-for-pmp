@@ -16,7 +16,7 @@
  * Plugin Name:       Emailchef Add On for Paid Memberships Pro
  * Plugin URI:        https://www.emailchef.com/wordpress-paid-memberships-pro-emailchef-add-on/
  * Description:       Sync your WordPress users and members with Emailchef lists.
- * Version:           1.7.0
+ * Version:           1.8.0
  * Author:            edisplayit
  * Author URI:        https://www.emailchef.com/
  * License:           GPL-2.0+
@@ -35,7 +35,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'EMAILCHEF_ADD_ON_FOR_PMP_VERSION', '1.7.0' );
+define( 'EMAILCHEF_ADD_ON_FOR_PMP_VERSION', '1.8.0' );
 define( 'EMAILCHEF_ADD_ON_FOR_PMP_PATH', __FILE__ );
 
 require_once plugin_dir_path(__FILE__) . 'includes/class-emailchef-add-on-for-pmp-api-base.php';

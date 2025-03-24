@@ -82,7 +82,7 @@
 
                 jQuery.post(ajaxurl, data, function (response) {
                     if (response.success) {
-                        window.reload();
+                        location.reload();
                     }
                 });
 
