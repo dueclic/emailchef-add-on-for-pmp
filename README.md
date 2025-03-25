@@ -44,6 +44,7 @@ Please visit [our dedicated page](https://emailchef.com/wordpress-paid-membershi
 
 ## Changelog
 
+* 1.9.0 Small fixes
 * 1.8.0 Disconnection bugfix
 * 1.7.0 Use Emailchef API Keys
 * 1.6.0 Extended compatibility to WP 6.7
