@@ -4,6 +4,8 @@
   "description": "Sync your WordPress users and Paid Memberships Pro members with Emailchef lists",
   "private": true,
   "scripts": {
+    "release": "commit-and-tag-version",
+    "release:dry": "commit-and-tag-version --dry-run",
     "env:start": "wp-env start",
     "env:stop": "wp-env stop",
     "env:destroy": "wp-env destroy",
@@ -16,6 +18,7 @@
     "node": ">=20"
   },
   "devDependencies": {
-    "@wordpress/env": "^10.0.0"
+    "@wordpress/env": "^10.0.0",
+    "commit-and-tag-version": "^12.5.0"
   }
 }
