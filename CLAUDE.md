@@ -34,8 +34,10 @@ Releases are driven by **conventional commits** (`feat:`, `fix:`, …) via `comm
 ```bash
 pnpm run release:dry   # preview: next version + changelog (no side effects)
 pnpm run release       # bump versions, update changelogs, commit, create tag
-git push --follow-tags origin main   # push manually — this triggers the WP.org deploy
+git push origin main && git push origin <version>   # push manually — the tag triggers the WP.org deploy
 ```
+
+Push the tag explicitly: the tags in this repo are **lightweight**, and `git push --follow-tags` only pushes annotated ones, so it would silently push the release commit without the tag and no deploy would run.
 
 `pnpm run release` computes the next semver from commits since the last tag and updates every version location in one commit: the `Version:` header **and** the `EMAILCHEF_ADD_ON_FOR_PMP_VERSION` constant in `emailchef-add-on-for-pmp.php`, `Stable tag:` in `.wordpress-org/readme/README.md`, `package.json`, and `CHANGELOG.md`. It also regenerates the user-facing `== Changelog ==` entry in the WP.org readme from the conventional commits (via `scripts/patch-version.sh`, hooked as the `postbump` lifecycle script). Config is in `.versionrc.js`; the custom updaters live in `scripts/version-updaters/`. Tags are plain versions with no `v` prefix (e.g. `1.9.1`). Never bump versions by hand.
 
