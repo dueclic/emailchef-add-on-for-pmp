@@ -1,0 +1,21 @@
+{
+  "name": "emailchef-add-on-for-pmp",
+  "version": "1.9.1",
+  "description": "Sync your WordPress users and Paid Memberships Pro members with Emailchef lists",
+  "private": true,
+  "scripts": {
+    "env:start": "wp-env start",
+    "env:stop": "wp-env stop",
+    "env:destroy": "wp-env destroy",
+    "env:cli": "wp-env run cli wp"
+  },
+  "author": "dueclic",
+  "license": "GPL-2.0-or-later",
+  "packageManager": "pnpm@9.15.9",
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "@wordpress/env": "^10.0.0"
+  }
+}

@@ -2,3 +2,6 @@
 dist/*
 oldstuff
 .claude/settings.local.json
+node_modules
+vendor
+.wp-env.override.json

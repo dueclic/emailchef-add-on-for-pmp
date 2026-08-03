@@ -8,7 +8,24 @@ Official Emailchef Add On for Paid Memberships Pro plugin (slug: `emailchef-add-
 
 Requires Paid Memberships Pro (activation aborts without it) and authenticates against Emailchef with API keys (consumer key / secret).
 
-There is no build step: admin and public CSS/JS are plain files under `admin/` and `public/`, loaded as-is. There are no tests and no PHP linting configured; PHP is loaded directly by WordPress.
+## Commands
+
+Toolchain: Node 20 (`.nvmrc`) + pnpm 9 (pinned via `packageManager`, use through corepack: `corepack enable` once, then plain `pnpm` works). Node is only needed for the tooling below — the plugin itself has **no build step**: admin and public CSS/JS are plain files under `admin/` and `public/`, loaded as-is. There are no tests and no PHP linting configured; PHP is loaded directly by WordPress.
+
+```bash
+pnpm install
+```
+
+## Local dev environment (wp-env)
+
+`@wordpress/env` (needs Docker) spins up WordPress with Paid Memberships Pro (latest stable) and the plugin mounted and activated; config in `.wp-env.json` (PHP 8.2, `WP_DEBUG` on).
+
+```bash
+pnpm run env:start    # http://localhost:8888 — admin: admin/password
+pnpm run env:stop
+pnpm run env:destroy  # remove containers + volumes
+pnpm run env:cli ...  # WP-CLI inside the container, e.g. pnpm run env:cli option get pmproecaddon_plugin_user_enabled
+```
 
 ## Architecture
 
