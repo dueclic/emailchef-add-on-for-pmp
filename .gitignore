@@ -1,3 +1,4 @@
 .idea
 dist/*
 oldstuff
+.claude/settings.local.json
