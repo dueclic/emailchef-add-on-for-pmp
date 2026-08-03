@@ -71,7 +71,7 @@ All user-facing strings use the `emailchef-add-on-for-pmp` text domain; translat
 
 ## Deployment
 
-Deployment to the WordPress.org SVN repo happens automatically via GitHub Actions (`.github/workflows/deploy.yml`) when a git tag is pushed. `.distignore` controls what is excluded from the deployed zip (dev files and repo metadata are excluded). `generate_archive.sh` builds the same kind of zip locally with `git archive`.
+Deployment to the WordPress.org SVN repo happens automatically via GitHub Actions (`.github/workflows/deploy.yml`) when a git tag is pushed; the workflow then attaches the packaged zip to a GitHub release for the tag — the exact zip deployed to WP.org. A build & package check workflow (`.github/workflows/build.yml`) does the same packaging on every PR and uploads the zip as an artifact. `.distignore` controls what is excluded from the deployed zip (dev files and repo metadata are excluded). `generate_archive.sh` builds a rough zip locally with `git archive`, but it does not honour `.distignore` — the CI artifact is the reference.
 
 ## Conventions
 

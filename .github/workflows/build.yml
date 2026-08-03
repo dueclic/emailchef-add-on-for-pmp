@@ -1,0 +1,25 @@
+name: Build & package check
+on:
+  pull_request:
+  workflow_dispatch:
+jobs:
+  build:
+    name: Build plugin zip
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # Package with the same rsync + .distignore logic used by the
+      # WP.org deploy action, so the artifact matches what gets deployed.
+      - name: Package plugin zip
+        run: |
+          mkdir -p /tmp/package/emailchef-add-on-for-pmp
+          rsync -rc --exclude-from=.distignore ./ /tmp/package/emailchef-add-on-for-pmp/ --delete --delete-excluded
+          cd /tmp/package
+          zip -rq emailchef-add-on-for-pmp.zip emailchef-add-on-for-pmp
+          echo "── zip contents ──"
+          unzip -l emailchef-add-on-for-pmp.zip
+      - name: Upload zip artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: emailchef-add-on-for-pmp-zip
+          path: /tmp/package/emailchef-add-on-for-pmp.zip
