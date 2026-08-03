@@ -1,6 +1,6 @@
 {
   "name": "emailchef-add-on-for-pmp",
-  "version": "1.9.1",
+  "version": "1.9.2",
   "description": "Sync your WordPress users and Paid Memberships Pro members with Emailchef lists",
   "private": true,
   "scripts": {

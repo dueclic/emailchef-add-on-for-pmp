@@ -4,7 +4,7 @@ Donate link: https://www.emailchef.com
 Tags: paid memberships pro, pmpro, emailchef, email marketing
 Requires at least: 6.0
 Tested up to: 7.0
-Stable tag: 1.9.1
+Stable tag: 1.9.2
 Requires PHP: 7.0
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -54,6 +54,11 @@ Please visit [our dedicated page](https://emailchef.com/wordpress-paid-membershi
 2. Specific settings for Membership Levels and Lists.
 
 == Changelog ==
+= 1.9.2 =
+* Docs: add CLAUDE.md, repo hygiene, WordPress 7.0 compatibility
+* drive releases with commit-and-tag-version
+* add package check on PRs and GitHub release with plugin zip
+* add Node 20 + pnpm 9 toolchain and wp-env dev environment
 
 = 1.9.1 =
 * Fix: small changes for success response
