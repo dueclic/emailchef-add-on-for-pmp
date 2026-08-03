@@ -10,3 +10,8 @@
 README.md
 CLAUDE.md
 generate_archive.sh
+package.json
+pnpm-lock.yaml
+.nvmrc
+.wp-env.json
+.wp-env.override.json
